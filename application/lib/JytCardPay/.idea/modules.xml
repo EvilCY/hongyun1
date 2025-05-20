@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/pay.iml" filepath="$PROJECT_DIR$/.idea/pay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../php_test/.idea/php_test.iml" filepath="$PROJECT_DIR$/../php_test/.idea/php_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../rnpay/.idea/rnpay.iml" filepath="$PROJECT_DIR$/../rnpay/.idea/rnpay.iml" />
+    </modules>
+  </component>
+</project>

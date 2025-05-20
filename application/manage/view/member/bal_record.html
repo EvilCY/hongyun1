@@ -1,0 +1,97 @@
+{extend name="admin@main"}
+{block name="content"}
+{php}$vip = config('bal_type');$bal_type = config('bal_type'){/php}
+<style type="text/css">
+    .pic{
+        width: 100px;
+        height: 70px;
+    }
+</style>
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">手机号码</label>
+                <div class="layui-input-inline">
+                    <input name="tel" value="{$Think.get.tel|default=''}" placeholder="输入手机号码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="vip_level">
+                        <!--<option value="">全部</option>-->
+                        {foreach $vip as $k=>$v}
+                        {eq name='Think.get.vip_level' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">时间</label>
+                <div class="layui-input-inline">
+                    <input data-date-range name="add_time" value="{$Think.get.add_time|default=''}" placeholder="请选择时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">数据源</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="db_type">
+                        <option <?php if($db_type == 1){echo 'selected';}?> value="1">最新数据</option>
+                        <option <?php if($db_type == 2){echo 'selected';}?> value="2">历史数据</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <span data-title="当前累计" class='layui-btn layui-btn-sm'>总累计{$num}</span>
+            </div>
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>序号</th>
+        <th>会员</th>
+        <th>数量</th>
+        <th>类型</th>
+        <th>描述</th>
+        <th>操作时间</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+          {if isset($vo.tel)}{$vo.tel}{else}用户编号：{/if}【{$vo.member_id}】
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.number}
+        </td>
+        <td class='text-left nowrap'>
+            {:explode('-',$bal_type[$vo['type']])[1]}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.info}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.add_time|default='--'}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

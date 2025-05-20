@@ -1,0 +1,460 @@
+{extend name="admin@main"}
+{block name="button"}
+<button class="layui-btn layui-btn-primary" data-modal='{:url("member_level")}' data-title="修改行政区代理"><i class="layui-icon">&#xe608;</i>修改行政区代理</button>
+{/block}
+{block name="content"}
+{php}$vip = config('vip_level');$city_agency = config('city_agency');$station_agent = config('station_agent');$is_vip = [0=>'体验用户',1=>'正式用户']{/php}
+<div class="margin-bottom-10 text-left" style='overflow-y: auto;'>
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">联系手机</label>
+                <div class="layui-input-inline">
+                    <input name="account" value="{$Think.get.account|default=''}" placeholder="请输入手机号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">用户ID</label>
+                <div class="layui-input-inline">
+                    <input name="id" value="{$Think.get.id|default=''}" placeholder="请输入ID" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">锁定</label>
+                <div class="layui-input-inline">
+                    <select name="is_lock">
+                        {foreach [''=>'-- 全部 --','0'=>'否','1'=>'是'] as $k=>$v}
+                        {eq name='Think.get.is_lock' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">城市代理</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="city_agency">
+                        <option value="">全部</option>
+                        {foreach $city_agency as $k=>$v}
+                        {eq name='Think.get.city_agency' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">驿站代理</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="station_agent">
+                        <option value="">全部</option>
+                        {foreach $station_agent as $k=>$v}
+                        {eq name='Think.get.station_agent' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">行政区代理</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="vip_level">
+                        <option value="">全部</option>
+                        {foreach $vip as $k=>$v}
+                        {eq name='Think.get.vip_level' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">用户身份</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="is_vip">
+                        <option value="">全部</option>
+                        {foreach $is_vip as $k=>$v}
+                        {eq name='Think.get.is_vip' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">绑卡状态</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="is_card">
+                        <option value="">全部</option>
+                        {eq name='Think.get.is_card' value='1'}
+                        <option value="1" selected>已绑卡</option>
+                        {else}
+                        <option value="1">已绑卡</option>
+                        {/eq}
+                        {eq name='Think.get.is_card' value='2'}
+                        <option value="2" selected>未绑卡</option>
+                        {else}
+                        <option value="2">未绑卡</option>
+                        {/eq}
+                        {eq name='Think.get.is_card' value='3'}
+                        <option value="3" selected>绑卡状态有误</option>
+                        {else}
+                        <option value="3">绑卡状态有误</option>
+                        {/eq}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th class='text-left nowrap'>账户</th>
+        <th class='text-left nowrap'>上级</th>
+        <th class='text-left nowrap'>城市代理</th>
+        <th class='text-left nowrap'>驿站代理</th>
+        <th class='text-left nowrap'>行政区代理</th>
+        <th class='text-left nowrap'>身份</th>
+        <th class='text-left nowrap'>消费积分</th>
+        
+        <th class='text-left nowrap'>贡献积分</th>
+        
+        <th class='text-left nowrap'>绿色积分</th>
+        <th class='text-left nowrap'>福分</th>
+        <th class='text-left nowrap'>冻结福分</th>
+        <th class='text-left nowrap'>锁定</th>
+        
+        <th class='text-left nowrap'>个人业绩</th>
+        <th class='text-left nowrap'>团队业绩</th>
+        
+        <th class='text-left nowrap'>注册时间</th>
+        <th class='text-left nowrap'>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap' title='{$vo.message_id}'>
+            {$vo.tel}<br/>【{$vo.message_id}】
+        </td>
+        <td class='text-left nowrap'>
+            {if condition='$vo.parent_id'}
+            <a data-open="{:url()}?id={$vo.parent_id}">{$vo.ptel}<br/>【{$vo.parent_id}】</a>
+                {else}
+            --
+            {/if}
+        </td>
+        <td class='text-left nowrap'>
+            <div class="layui-form" >
+                <input type="checkbox" lay-skin="switch" value="{$vo.id}" lay-filter="test1" lay-text="城市代理|用户" {if condition="$vo.city_agency eq 1"}checked{/if} />
+            </div>
+        </td>
+        <td class='text-left nowrap'>
+            <div class="layui-form" >
+                <input type="checkbox" lay-skin="switch" value="{$vo.id}" lay-filter="test2" lay-text="驿站代理|用户" {if condition="$vo.station_agent eq 1"}checked{/if} />
+            </div>
+        </td>
+        <td class='text-left nowrap'>
+            {$vip[$vo.level]}
+
+        </td>
+        <td class='text-left nowrap'>
+            {if condition='$vo.is_vip == 1'}
+                {if in_array($vo.id, $config_ids)}
+                <a href = 'admin.html#manage/member/teams.html?user_id={$vo.id}&tel={$vo.tel}'>正式用户</a>
+                {else}
+                     正式用户
+                {/if}
+            {else}
+            体验用户
+            {/if}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.integral}
+        </td>
+        
+        <td class='text-left nowrap'>
+            {$vo.points}
+        </td>
+        
+        <td class='text-left nowrap'>
+            {$vo.green_points}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.lot}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.freeze_lot}
+        </td>
+        {if condition="$vo['is_lock'] eq 1"}
+        <td class='text-left nowrap' data-confirm="确定要解封吗？" data-action="{:url('member_lock')}" data-value="id#{$vo.id};is_lock#0">
+            <span style="color:red;">锁定</span>
+            <br/>
+            {$vo.lock_remark}
+        </td>
+        {else/}
+        <td class='text-left nowrap' data-modal="{:url('member_lock')}?id={$vo.id}&tel={$vo.tel}"  data-title="用户锁定" >
+            <span style="color:green;">正常</span>
+        </td>
+        {/if}
+        
+        <td class='text-left nowrap'>
+            {$vo.merits}
+        </td>
+        
+        <td class='text-left nowrap'>
+            {$vo.group_merits}
+        </td>
+        
+        <td class='text-left nowrap'>
+            {$vo.create_time}
+        </td>
+        <td class='text-left nowrap' style="position: relative;">
+            <div class='hoverx'>
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("main")}?user_id={$vo.id}&tel={$vo.tel}'>拓补图</a>
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("main_team")}?user_id={$vo.id}&tel={$vo.tel}'>团队拓补图</a>
+            <a class="layui-btn layui-btn-info layui-btn-sm" data-open='{:url("member_account")}?user_id={$vo.id}'>资产</a>
+            <a class="layui-btn layui-btn-primary layui-btn-sm" onclick="unlock_pay({$vo['id']})">删除银行卡</a>
+            <a class="layui-btn layui-btn-primary layui-btn-sm" onclick="unlock_state({$vo['id']})">纠正绑卡状态</a>
+            <a class="layui-btn layui-btn-primary layui-btn-sm" onclick="fix_phone({$vo['id']})">换手机号</a>
+            <a class="layui-btn layui-btn-primary layui-btn-sm" onclick="xinren_phone({$vo['id']})">信任手机号</a>
+            <a class="layui-btn layui-btn-primary layui-btn-sm" onclick="miss_psw_phone({$vo['id']})">重置登录密码</a>
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("mains")}?user_id={$vo.id}&tel={$vo.tel}'>错误</a>
+            </div>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<style>
+   .hoverx{width: 55px;  
+    overflow: hidden;  
+    position: absolute;  
+    left: -3px;  
+    padding-top: 14px;
+    padding-bottom: 14px;
+    top:0;
+    /* 添加transition属性来平滑过渡 */  
+    transition: left 0.5s ease;
+    }
+    .hoverx:hover{
+      background: rgb(242, 242, 242);  
+    /* 使用max-width而不是width: auto，因为width: auto无法过渡 */  
+    width: auto; /* 或者使用足够大的值来确保它完全展开 */  
+    left: -675px; /* 确保这里的值是根据你的布局来设置的，可能需要调整 */  
+    }
+</style>
+<script>
+    form.render();
+    form.on('switch(test1)', function(data){
+        $.ajax({
+            url: '{:url("limit_status")}?id=' + data.value+'&type='+data.elem.checked,
+            type: 'post',
+            async: false,
+            success: function (data) {
+                if(data.code){
+                    layer.msg(data.info, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    })
+                }else{
+                    layer.msg(data.info);
+                }
+            }
+        });
+    });
+    form.on('switch(test2)', function(data){
+        $.ajax({
+            url: '{:url("station_agent")}?id=' + data.value+'&type='+data.elem.checked,
+            type: 'post',
+            async: false,
+            success: function (data) {
+                if(data.code){
+                    layer.msg(data.info, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    })
+                }else{
+                    layer.msg(data.info);
+                }
+            }
+        });
+    });
+    
+    function fix_phone(id) {
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入修改的手机号',
+        }, function(value, index, elem){
+            if(value==''){
+                layer.msg('请输入修改的手机号')
+            }
+            $.ajax({
+                type: 'post',
+                url: "{:url('fix_phone')}",
+                data: {id:id,content:value},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+    
+    function xinren_phone(id) {
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入信任手机号',
+        }, function(value, index, elem){
+            if(value==''){
+                layer.msg('请输入信任手机号')
+            }
+            $.ajax({
+                type: 'post',
+                url: "{:url('xinren_phone')}",
+                data: {id:id,content:value},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+    
+    function miss_psw_phone(id) {
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入接收密码的手机号',
+        }, function(value, index, elem){
+            if(value==''){
+                layer.msg('请输入接收密码的手机号')
+            }
+            $.ajax({
+                type: 'post',
+                url: "{:url('send_miss_psw')}",
+                data: {id:id,content:value},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+
+    function unlock_state(id) {
+        layer.confirm('确定要纠正该会员银行卡绑定吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                type: 'post',
+                url: "{:url('unlock_state')}",
+                data: {id:id},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+    function unlock_pay(id) {
+        layer.confirm('确定要删除该会员所有银行卡信息吗?<br/>这将需要用户重新绑定认证！', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                type: 'post',
+                url: "{:url('unlock_pay')}",
+                data: {id:id},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

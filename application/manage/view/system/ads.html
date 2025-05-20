@@ -1,0 +1,111 @@
+{extend name="admin@main"}
+{block name="button"}
+{php}$ads_type = config('ads_type');$ads_link_type = config('ads_link_type');{/php}
+<button data-modal='{:url("ads_add")}' data-title="添加广告" class='layui-btn layui-btn-sm'>添加广告</button>
+{/block}
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th>预览</th>
+        <th>标题</th>
+        <th>类型</th>
+        <th>链接类型</th>
+        <th>链接</th>
+        <th>排序</th>
+        <th>状态</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap imgsx'>
+            <img src="{$vo.imgurl}">
+        </td>
+        
+        <script>
+                setTimeout(function(){
+                var imgs = document.querySelectorAll('.text-left.nowrap.imgsx img'); // 选择所有匹配的img元素  
+                imgs.forEach(function(img) {  
+                    // 替换src属性中的"youhua"为"ssl"  
+                    var newSrc = img.src.replace(/http:\/\/youhua\./g, 'http://ssl.');  
+                    img.src = newSrc; // 设置新的src属性  
+                });
+                
+                var imgs = document.querySelectorAll('.text-left.nowrap.imgsx img'); // 选择所有匹配的img元素  
+                imgs.forEach(function(img) {  
+                    var newSrc = img.src.replace(/http:\/\/load\./g, 'http://ssl.');  
+                    img.src = newSrc; // 设置新的src属性  
+                });
+                
+                var imgs = document.querySelectorAll('.text-left.nowrap.imgsx img'); // 选择所有匹配的img元素  
+                imgs.forEach(function(img) {  
+                    var newSrc = img.src.replace(/http:\/\/oss\./g, 'http://ssl.');  
+                    img.src = newSrc; // 设置新的src属性  
+                });
+                
+                },100)
+                
+        </script>
+        
+        <td class='text-left nowrap'>
+            {$vo.title}
+        </td>
+        <td class='text-left nowrap'>
+            {:config('ads_type')[$vo.type]}
+        </td>
+        <td class='text-left nowrap'>
+            {:$ads_link_type[$vo.link_type]}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.link}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.order_num}
+        </td>
+        <td class='text-left nowrap'>
+            <div class="layui-form" >
+                <input type="checkbox" lay-skin="switch" value="{$vo.id}" lay-filter="test2" lay-text="显示|隐藏" {if condition="$vo.status eq 1"}checked{/if} >
+            </div>
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time}
+        </td>
+        <td class='text-left nowrap'>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("ads_edit")}?id={$vo.id}' data-title="编辑广告">编辑</a>
+            <a data-dbclick class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除吗？" data-action="{:url('ads_del')}" data-value="id#{$vo.id}">删 除</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    form.render();
+    form.on('switch(test2)', function(data){
+        $.ajax({
+            url: '{:url("ads_status")}?id=' + data.value+'&type='+data.elem.checked,
+            type: 'post',
+            async: false,
+            success: function (data) {
+                if(data.code){
+                    layer.msg(data.info, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    })
+                }else{
+                    layer.msg(data.info);
+                }
+            }
+        });
+    });
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

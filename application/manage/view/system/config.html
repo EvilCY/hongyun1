@@ -1,0 +1,47 @@
+{extend name="admin@main"}
+
+{block name="content"}
+<style type="text/css">
+    .layui-form-label{
+        width: 150px;
+    }
+    .layui-input-block{
+        margin-left: 200px;
+    }
+</style>
+<form  id="form"  data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body">
+        {foreach name="list" item="item"}
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$item.title}<br><span class="nowrap color-desc"></span></label>
+            <div class="layui-input-block">
+                {if condition='$item["type"]=="radio"'}
+                <input type="radio" name="{$item.key}" value="1" title="开启" {if condition="$item.val eq 1"}checked{/if}>
+                <input type="radio" name="{$item.key}" value="0" title="关闭" {if condition="$item.val eq 0"}checked{/if}>
+                {elseif condition='$item["type"]=="imges"'}
+                <img alt="icon" data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{$item.val}"/>
+                <input type="hidden" required name="{$item.key}" onchange="$(this).prev('img').attr('src', this.value)" value="{$item.val}" class="layui-input">
+                <a class="margin-left-10" data-file="btn" data-type="jpg,png,jpeg" data-field="{$item.key}">上传图片</a>
+                {else}
+                <input name="{$item.key}" required placeholder="请输入{$item.key}" value="{$item.val}" class="layui-input">
+                {/if}
+            </div>
+        </div>
+        {/foreach}
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center">
+            <div class="layui-row">
+                <div class="layui-col-sm8 layui-col-md6">
+                    <button class="layui-btn" type="submit">保存配置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}

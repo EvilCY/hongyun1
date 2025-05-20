@@ -1,0 +1,23 @@
+<form class="layui-form layui-card" action="{:url('')}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">日期</label>
+            <div class="layui-input-block">
+                <input type="text" readonly autocomplete="off" value='{$info.create_time|substr=0,10}' class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数量</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="val" required value='{$info.val}' placeholder="请输入数量" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <input type='hidden' value='{$Think.get.id}' name='id'>
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script>form.render()</script>

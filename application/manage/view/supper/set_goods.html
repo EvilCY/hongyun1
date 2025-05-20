@@ -1,0 +1,43 @@
+
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+  <div class="layui-card-body">
+    <div class="layui-form-item">
+      <label class="layui-form-label label-required">选择商品</label>
+      <div class="layui-input-block">
+        <div id="demo1" class="xm-select-demo"></div>
+        <input  hidden id="newVal" value="{$info.pro_id}" name="pro_id"  />
+      </div>
+    </div>
+  </div>
+  <div class="hr-line-dashed"></div>
+  <div class="layui-form-item text-center">
+    {notempty name='info.id'}<input type='hidden' value='{$info.id}' name='id'>{/notempty}
+    <button class="layui-btn" type='submit'>保存数据</button>
+    <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+  </div>
+</form>
+<script>
+  var demo1 = xmSelect.render({
+    el: '#demo1',
+    tips:'请选商品',
+    toolbar: {show: true},
+    filterable: true,
+    style: {
+      paddingLeft: '10px',
+      paddingRight: '20px',
+      position: 'relative',
+      width: "490px",
+      height: "34px",
+    },
+    on: function(data){
+      //arr:  当前多选已选中的数据
+      var arr = data.arr;
+      var newVal=[];
+      arr.forEach(function(item){
+        newVal.push(item.value)
+      });
+      $("#newVal").val(newVal)
+    },
+    data:{:json_encode($goodsList)}
+  });
+</script>

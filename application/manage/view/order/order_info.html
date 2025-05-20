@@ -1,0 +1,35 @@
+<style>input{border:none;color:#666;background:transparent}textarea{background:transparent}</style>
+<table class="layui-table" lay-size="sm">
+        <tbody>
+        <tr>
+                <td>订单ID：<input readonly type="text" value='{$order_info.order_id}'></td>
+                <td>订单号：<input readonly type="text" value='{$order_info.order_sn}' size="30"></td>
+                <td>订单总额：<input readonly size='6' type="text" value='{$order_info.order_amount+$order_info.order_bal_amount}'></td>
+                <td>实付：<input readonly size='10' type="text" value='{$order_info.amount}'><br>优惠券抵扣：<input readonly size='10' type="text" value='{$order_info.order_bal_amount}'><br>商品供货价：<input readonly type="text" size='10' value='{$order_info.market_price}'></td>
+        </tr>
+        <tr>
+
+                <td>订单状态：<input readonly type="text" value='{$order_info.order_status}'></td>
+                <td>用户ID：<input readonly type="text" value='{$order_info.member_id}'></td>
+                <td>交易状态：<input readonly type="text" value='{$order_info.is_off}'></td>
+                <td>收货地址：<br><textarea readonly style="width:100%;border:none;color:#666;resize:none">{$order_info.address}</textarea></td>
+        </tr>
+        <tr>
+                <td>快递单号：<input readonly type="text" value='{$order_info.tran_sn}'></td>
+                <td>快递名称：<input readonly type="text" value='{$order_info.tran_type}'></td>
+                <td>发货时间：<input readonly type="text" value='{$order_info.send_time}'></td>
+                <td>物流备注：<input readonly type="text" value='{$order_info.tran_note}'></td>
+        </tr>
+        <tr>
+                <td>电话：<input readonly type="text" value='{$order_info.tel}'></td>
+                <td>姓名：<input readonly type="text" value='{$order_info.name}'></td>
+                <td>购买数量:<input readonly type="text" value='{$order_info.num}'></td>
+                <td width=300>
+                        商品名称：<br><textarea readonly style="width:100%;border:none;color:#666;resize:none">{$order_info.title}</textarea>
+                        <br>售价：<input readonly type="text" value='{$order_info.price}'>
+                        <br>数量：<input readonly type="text" value='{$order_info.num}'>
+                        <br>属性名称：<textarea readonly style="width:100%;border:none;color:#666;resize:none">{$order_info.spec_name}</textarea>
+                </td>
+        </tr>
+        </tbody>
+</table>

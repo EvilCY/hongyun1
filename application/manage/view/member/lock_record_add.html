@@ -1,0 +1,31 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="1" title="超时未支付" checked>
+                <input type="radio" name="type" value="2" title="超时未确认">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label label-required">原因</label>
+        <div class="layui-input-block">
+            <input type="text" autocomplete="off" name="remark" value="信息不匹配" placeholder="原因" class="layui-input">
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <input type="hidden" name="user_id" value="{$Think.get.id}"/>
+        <button class="layui-btn" type="submit">保存数据</button>
+    </div>
+</form>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}

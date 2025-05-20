@@ -1,0 +1,147 @@
+.border-bottom {
+  border-bottom: 1px solid #20304e;
+}
+image {
+  display: block;
+  margin: 0 auto;
+}
+button {
+  font-size: 0.3rem;
+  color: #fff;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 0;
+  width: 6.9rem;
+  margin: 0.5rem auto;
+  line-height: 1rem;
+  background-image: linear-gradient(90deg, #faf6b6 0%, #7d7b5b 0%, #000000 0%, #536d73 0%, #02DF82 0%, #02C874 0%, #01B468 0%, #019858 100%);
+}
+.body-bg {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #080f1e;
+  font-size: 0.28rem;
+  color: #333;
+}
+.register {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  /*background: #080f1e;*/
+  font-size: 0.28rem;
+  color: #fff;
+  padding: 0.3rem;
+}
+.register .logo {
+  width: 3.5rem;
+  display: block;
+  margin: 1rem auto 0.5rem;
+}
+.register button {
+  margin: 0.3rem auto;
+}
+.model {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #20304e;
+}
+.model .text {
+  width: 0.43rem;
+  height: 0.43rem;
+  margin: 0;
+  margin-right: 0.2rem;
+}
+.model input {
+  background: transparent;
+  border: 0;
+  /*color: #fff;*/
+}
+.model .placeholder {
+  color: #8489a3;
+}
+.model .code {
+  width: 2rem;
+  line-height: 0.53rem;
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  font-size: 0.3rem;
+  padding:0;
+}
+.model .eye {
+  width: 0.42rem;
+  height: 0.42rem;
+  margin: 0;
+}
+.model .tel {
+  width: 0.43rem;
+  height: 0.43rem;
+  margin: 0;
+  margin-right: 0.2rem;
+  background: url("../ico/reg-2.png") no-repeat center center;
+  background-size: 0.43rem 0.43rem;
+}
+.model .invite {
+  width: 0.43rem;
+  height: 0.43rem;
+  margin: 0;
+  margin-right: 0.2rem;
+  background: url("../ico/reg-1.png") no-repeat center center;
+  background-size: 0.39rem 0.42rem;
+}
+.model .invite_code {
+  color: #01B468;
+}
+.model .getCode {
+  width: 0.43rem;
+  height: 0.43rem;
+  margin: 0;
+  margin-right: 0.2rem;
+  background: url("../ico/reg-3.png") no-repeat center center;
+  background-size: 0.41rem 0.43rem;
+}
+.model .login_pwd {
+  width: 0.43rem;
+  height: 0.43rem;
+  margin: 0;
+  margin-right: 0.2rem;
+  background: url("../ico/reg-4.png") no-repeat center center;
+  background-size: 0.39rem 0.42rem;
+}
+.model .con_pwd {
+  width: 0.43rem;
+  height: 0.43rem;
+  margin: 0;
+  margin-right: 0.2rem;
+  background: url("../ico/reg-5.png") no-repeat center center;
+  background-size: 0.39rem 0.42rem;
+}
+.select {
+  padding: 0.3rem 0;
+  justify-content: flex-start;
+  font-size: 0.26rem;
+  color: #8489a3;
+}
+.select .ico-select {
+  width: 0.32rem;
+  height: 0.32rem;
+  margin: 0;
+  margin-right: 0.2rem;
+}
+.select .agree {
+  color: #01B468;
+}
+.tips-box {
+  width: 100%;
+  justify-content: center;
+  padding: 0.3rem 0;
+}
+.tips-box .tips {
+  width: 3rem;
+  line-height: 0.8rem;
+  text-align: center;
+  border-radius: 0.4rem;
+  font-size: 0.28rem;
+  color: #01B468;
+  text-decoration: underline;
+}

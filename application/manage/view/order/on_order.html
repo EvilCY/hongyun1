@@ -1,0 +1,95 @@
+{php}$kuaidi = config('kuaidi');{/php}
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">选择快递</label>
+            <div class="layui-input-block">
+                <select class="select" name="tran_type">
+                    {foreach $kuaidi as $k=>$v}
+                    <option value="{$k}">{$k}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <input name="order_status" value="2" hidden>
+            <input name="send_time" hidden value="{:date('Y-m-d H:i:s')}">
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">快递单号</label>
+            <div class="layui-input-block">
+                <input id ='tran_type' type="text" autocomplete="off" name="tran_sn" placeholder="请输入发货快递单号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">备注说明</label>
+            <div class="layui-input-block">
+            <textarea  class="layui-textarea"  name="tran_note" placeholder="请输入发货备注,多个快递: 橙子1;橘子2..." ></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.order_id'}<input type='hidden' value='{$vo.order_id}' name='order_id'>{/notempty}
+        <button class="layui-btn" type='submit'>确认发货</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>关闭</button>
+    </div>
+    <script>window.form.render();</script>
+</form>
+
+<script>
+
+setInterval(function() {
+    // 获取所有带有layui-anim类的dl元素（这里假设只有一个）
+    var dlElements = document.querySelectorAll('dl.layui-anim');
+    
+    // 遍历每个dl元素
+    dlElements.forEach(function(dlElement) {
+        // 获取dl元素下所有带有layui-this类的dd元素
+        var ddElements = dlElement.querySelectorAll('dd.layui-this');
+        
+        // 初始化一个标志，标识是否允许所有输入
+        let allowAllInput = false;
+        
+        // 遍历每个dd元素
+        ddElements.forEach(function(ddElement) {
+            // 检查dd元素的内容是否等于“圆通速递”
+            if (ddElement.textContent.trim() === '自提') {
+                allowAllInput = true; // 允许所有输入
+            }
+        });
+        
+        // 更新输入行为
+        updateInputBehavior(allowAllInput, 'tran_type');
+    });
+    
+}, 1000); // 1000毫秒 = 1秒
+
+function updateInputBehavior(allowAll, inputElementId) {
+    var inputElement = document.getElementById(inputElementId);
+    
+    if (!inputElement) {
+        console.error('Input element with ID "' + inputElementId + '" not found.');
+        return;
+    }
+    
+    // 设置允许输入的状态
+    inputElement.dataset.allowAll = allowAll.toString();
+    
+    // 移除之前的事件监听器
+    inputElement.removeEventListener('input', handleInput);
+    inputElement.addEventListener('input', handleInput);
+}
+
+function handleInput(event) {
+    var inputElement = event.target;
+    var allowAll = inputElement.dataset.allowAll === 'true'; // 判断是否允许所有输入
+
+    if (!allowAll) {
+        // 只允许大写、小写字母和数字
+        var newValue = inputElement.value.replace(/[^a-zA-Z0-9]/g, ''); // 移除非字母和非数字字符
+        inputElement.value = newValue; // 更新输入框的值
+    }
+}
+
+if ("{:session('user.username')}".trim() == "2上架发货" || "{:session('user.username')}".trim() == "hongyun2023"|| "{:session('user.username')}".trim() == "订单1" || "{:session('user.username')}".trim() == "订单2"){}else{var dds = document.querySelectorAll('dd[lay-value]');dds.forEach(function(dd) {if (dd.getAttribute('lay-value') === '自提') {dd.parentNode.removeChild(dd);}});
+}
+</script>

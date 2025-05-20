@@ -1,0 +1,168 @@
+{extend name="admin@main"}
+{block name="content"}
+{php}$status = [0 => '待审核',1=>'通过',2=>'审核不通过'];$status_label = [ 0 => 'orange', 1 => 'green',2 => 'gray'];{/php}
+<style type="text/css">
+    .pic{
+        width: 100px;
+        height: 70px;
+    }
+</style>
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select name="status">
+                        <option  value="">全部</option>
+                        {foreach $status as $k=>$v}
+                        {eq name='Think.get.status' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">支付宝账号</label>
+                <div class="layui-input-inline">
+                    <input name="alipay_no" value="{$Think.get.alipay_no|default=''}" placeholder="输入支付宝账号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input name="alipay_name" value="{$Think.get.alipay_name|default=''}" placeholder="输入姓名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th>会员</th>
+        <th>支付宝姓名</th>
+        <th>支付宝账号</th>
+        <th>提现金额</th>
+        <th>手续费</th>
+        <th>状态</th>
+        <th>提交时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.tel}【{$vo.member_id}】
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.alipay_name}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.alipay_no}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.money}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.free}
+        </td>
+        <td class='text-left nowrap'>
+            <span class="layui-badge layui-bg-{:$status_label[$vo['status']]}">{:$status[$vo['status']]}</span>
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time|default='--'}
+        </td>
+        <td>
+            {if $vo['status'] == 0}
+            <span onclick="authadopt({$vo['id']})" class="layui-btn layui-btn-normal layui-btn-sm">审核</span>
+            <span onclick="authreject({$vo['id']})" class="layui-btn layui-btn-danger layui-btn-sm">拒绝</span>
+            {/if}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    //调用示例
+    layer.photos({
+        photos: '.test'
+        ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+    });
+    function authadopt(id) {
+        layer.confirm('确定审核通过?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                type: 'post',
+                url: "{:url('withdraw_adopt')}",
+                data: {id:id},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }
+                }
+            })
+        });
+    }
+    function authreject(id) {
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入不通过原因',
+        }, function(value, index, elem){
+            if(value==''){
+                layer.msg('请输入不通过原因')
+            }
+            $.ajax({
+                type: 'post',
+                url: "{:url('withdraw_reject')}",
+                data: {id:id,content:value},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

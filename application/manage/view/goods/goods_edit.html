@@ -1,0 +1,287 @@
+<style>
+    .uploadBox{
+        background-size:100% 100%;background-color: gainsboro; width:150px;height:100px;display: table-cell;vertical-align: middle;text-align: center;cursor: pointer;position: relative;
+    }
+    .upload-option-button {
+        float: right;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        display: none;
+    }
+    .upload-option-button:hover {
+        text-decoration: none;
+        color: #fff
+    }
+    .uploadimagemtl:hover a {
+        display: inline-block
+    }
+    #button span{
+        float: left;
+        position:relative;
+    }
+    #button span button{
+        position:absolute;
+        top:0;
+        right:0;
+    }
+    .col-sm-3{
+        float: left;
+        width: 80px;
+        margin: 8px 10px 0 0;
+    }
+    .col-sm-4{
+        float: left;
+        width: 23%;
+        margin: 3px 10px 3px 0;
+        position: relative;
+    }
+    .col-sm-4 .btn-xs{
+        position:absolute;
+        bottom:0;
+    }
+    .gonghuojia{visibility: hidden;}
+</style>
+{php}$goods_type = config("goods_type");{/php}
+<form class="layui-form layui-card" id="form" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">选择分类</label>
+            <div class="layui-input-block">
+                {foreach $protype as $k=>$v}
+                    <div class="col-sm-3" style="margin: 10px 0">
+                        <label style="width: 65px">{$v.name}</label>
+                        <select class="form-control" name="protype[{$v.id}]">
+                            <option value="">请选择</option>
+                            {volist name="v.chi" id="val"}
+                                <option value="{$val.id}">{$val.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                {/foreach}
+            </div>
+            <input name="id" hidden value="{$goods.id}" >
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" value="{$goods.title}" name="title" placeholder="商品名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">商品价格</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" value="{$goods.price|default=''}" name="price"  placeholder="商品价格" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">商品LOGO及轮播展示图片</label>
+            <div class="layui-input-block">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th class="text-center">LOGO</th>
+                    <th class="text-left">展示图片</th>
+                </tr>
+                <tr>
+                    <td width="90px" class="text-center"><input name="imglogo" type="hidden" value="{$goods.imglogo|default=''}"></td>
+                    <td width="auto" class="text-left"><input name="imgs" type="hidden" value="{$goods.imgs|default=''}"></td>
+                </tr>
+                </thead>
+            </table>
+            </div>
+            <script>
+                var tihuan1 = $('[name="imglogo"]').attr("value").replace(/http:\/\/youhua\./g, 'http://ssl.')
+                var tihuan2 = $('[name="imgs"]').attr("value").replace(/http:\/\/youhua\./g, 'http://ssl.')
+                $('[name="imglogo"]').attr("value",tihuan1)
+                $('[name="imgs"]').attr("value",tihuan2)
+            </script>
+            <script>$('[name="imglogo"]').uploadOneImage(), $('[name="imgs"]').uploadMultipleImage()</script>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">规格属性</label>
+            <div class="layui-input-block">
+                <div id="list">
+                    {foreach $goods_spec as $z=>$item}
+                        <li>
+                            <input class='layui-input' name="spec_id[]" type="hidden" value="{$item.spec_id}"/>
+                            <div class='col-sm-4' style="width:100%">
+                                规格名称：
+                            <input class='layui-input' name="spec[]" type="text" value="{$item.name}"/> 
+                            </div>
+                            <div class='col-sm-4'>
+                                商品价：
+                            <input class='layui-input' name="price1[]" type="number" value="{$item.price}"/>
+                            </div>
+                            <div class='col-sm-4 gonghuojiax'>
+                                供货价：
+                            <input class='layui-input' name="market_price[]" type="number" value="{$item.market_price}"/>
+                            </div>
+                            <div class='col-sm-4'>
+                                库存：
+                            <input class='layui-input' name="spec_stock[]" type="number" value="{$item.stock}"/>
+                            </div>
+                            <div class='col-sm-4 gonghuojiax' style='height:62px'>
+                            <button type="button" onclick="$(this).parent().parent().remove()" class="btn btn-pink btn-xs layui-btn">
+                                <i class="fa fa-close"></i> 删除</button>
+                            </div>
+                        </li>
+                    {/foreach}
+                </div>
+                <button id="spec_create"  type="button" class="layui-btn" style="margin-top:5px;">
+                    <i class="layui-icon">&#xe608;</i> 添加
+                </button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品分区</label>
+            <div class="layui-input-block">
+                <select required name="goods_type">
+                    <option value="0">选择商品分区</option>
+                    {foreach name='goods_type' item='item'}
+                    <option {if condition="$key eq @$goods.goods_type"}selected{/if} value="{$key}">{$item}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">产品供应商</label>
+            <div class="layui-input-block">
+                <select required name="supplier">
+                    <option value="0">选择供应商</option>
+                    {foreach name='suppers' item='item'}
+                    <option {if condition="$key eq @$goods.supplier"}selected{/if} value="{$key}">{$item}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">商品销量</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" value="{$goods.sales|default=''}" name="sales"  placeholder="商品销量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">商品排序号</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" value="{$goods.order_num|default=''}"  name="order_num"  placeholder="商品排序号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="上架" {if condition="@$goods.status eq 1"}checked{/if} >
+                <input type="radio" name="status" value="0" title="下架" {if condition="@$goods.status eq 0"}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品描述</label>
+            <div class="layui-input-block">
+                <textarea name="details" id="content">{$goods.details|default=""}</textarea>
+                <script type="text/javascript">
+                    require([ 'ckeditor', 'angular'], function () {
+                        window.createEditor('[name="details"]', {height: 800,width:650});
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="button" id="sub">保存数据</button>
+    </div>
+
+</form>
+<script>
+    var delOptionId = [];
+    var dettype = {:json_encode($dettype,true)};
+    form.on('select(prid)', function(data){
+        /**
+         * 根据以及分类获取二级分类
+         * */
+        var prid = data.value;
+        var cidDom = $('[name="cid"]');
+        var option = '<option value="">按所有分类</option>';
+        if (prid == 0) {
+            cidDom.html(option);
+            return;
+        }
+        $.ajax({
+            url: '/dapp/goods/getTypeJson?pid=' + prid,
+            type: 'get',
+            async: false,
+            success: function (data) {
+                $.each(data.list, function (k, v) {
+                    option += '<option value="' + v.id + '">' + v.name + '</option>'
+                });
+                $('[name="cid"]').html(option);
+                form.render();
+            }
+        });
+
+    });
+    
+    document.addEventListener('keydown', function(event) {  
+    if (event.ctrlKey && event.key === 'y') {  
+        $(".gonghuojia").css({visibility:"visible"});
+    }  
+    });
+    
+    
+
+    
+    $('#spec_create').click(function () {
+        var option_input = '<li><input name="spec_id[]" type="hidden" value="0"/><div class="col-sm-4" style="width:100%">规则名称：<input  class="layui-input" name="spec[]" type="text" value=""/> </div><div class="col-sm-4">商品价：<input  class="layui-input" name="price1[]" type="number" value=""/></div><div class="col-sm-4">供货价：<input  class="layui-input" name="market_price[]" type="number" value=""/></div><div class="col-sm-4">库存：<input  class="layui-input" name="spec_stock[]" type="number" value=""/></div><div class="col-sm-4" style="height:62px"><button type="button" onclick="$(this).parent().parent().remove()" class="btn btn-pink btn-xs layui-btn"><i class="fa fa-close"></i> 删除</button></div></li>';
+        $('#list').append(option_input);
+    });
+    
+    
+    
+    function CKupdate() {
+        for (instance in CKEDITOR.instances)
+            CKEDITOR.instances[instance].updateElement();
+    }
+    $(document).ready(function(){
+        try{
+            for(key in dettype){
+                $('[name="protype['+dettype[key].prid+']"] [value="'+dettype[key].cid+'"]')[0].selected = true;
+            }
+        }catch (e){}
+        $('#sub').click(function () {
+        CKupdate();
+        var data = $('#form').serialize();
+        data+='&del_option='+delOptionId;
+        $.ajax({
+            type: 'post',
+            url: "{:url('dochange')}",
+            dataType: 'json',
+            data: data,
+            contentType: false, //不设置内容类型
+            processData: false, //不处理数据
+            success: function (data) {
+                if(data.status){
+                    layer.msg(data.code, {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                        // location.href= "/admin#{:url('index')}"
+                        layer.closeAll()
+                    });
+                }else{
+                    layer.msg(data.code);
+                }
+            }
+        })
+    });
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+

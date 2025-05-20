@@ -1,0 +1,101 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">昵称</label>
+            <div class="layui-input-block">
+                <input required type="text" autocomplete="off" name="title" value="{$info.title}"  placeholder="文章标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像</label>
+            <div class="layui-input-block">
+                <div class="uploadimage transition uploadimagemtl imglogo" style="background-image: url('{$info.imglogo}');"></div>
+                <input required type="hidden" name="imglogo" value="{$info['imglogo']}">
+                <a class="layui-btn layui-btn-normal btn-link" data-file="one" data-field="imglogo" data-type="png,jpg,jpeg" href="javascript:void(0)">上传图片</a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">简介</label>
+            <div class="layui-input-block">
+                <textarea name="descr" required lay-verify="required" class="layui-textarea">{$info['descr']}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-block">
+                {if condition='$info["imgs"]'}
+                <?php $imgurl = json_decode($info['imgs']);?>
+                {foreach $imgurl as $k =>$v}
+                <div class="uploadimage transition uploadimagemtl" data-index="{$k}" data-tips-image="{$v}" style="background-image: url('{$v}');">
+                    <a href="javascript:void(0)" onclick="deleteImg(this)" class="layui-icon upload-option-button">ဆ</a>
+                </div>
+                {/foreach}
+                {/if}
+                <input required type="hidden" value="{$info['imgs']|default=''}" name="imgs">
+                <a class="layui-btn layui-btn-normal btn-link" data-file="mut" data-field="imgs" data-type="png,jpg,jpeg" href="javascript:void(0)">上传图片</a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">排序号</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="order_num" value="{$info.order_num}"  placeholder="排序号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="显示" {if condition="$info.status eq 1"}checked{/if}>
+                <input type="radio" name="status" value="0" title="隐藏" {if condition="$info.status eq 0"}checked{/if}>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <input type="hidden" name="id" value="{$info.id}"/>
+        <button class="layui-btn" type="submit">保存数据</button>
+    </div>
+</form>
+<script type="text/javascript">
+    require(['jquery'], function () {
+        var tpl = '<div class="uploadimage transition uploadimagemtl"><a href="javascript:void(0)" class="layui-icon upload-option-button">ဆ</a></div>';
+        $('[name="imgs"]').on('change', function () {
+            console.log(this.value);
+            var input = this, values = [], srcs = this.value;
+            $(this).prevAll('.uploadimage').map(function () {
+                values.push($(this).attr('data-tips-image'));
+            }), $(this).prevAll('.uploadimage').remove();
+            values.reverse();
+            values.push(srcs);
+            this.value = JSON.stringify(values);
+            for (var i in values) {
+                var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+                $tpl.data('input', input).data('srcs', values).data('index', i);
+                $tpl.on('click', 'a', function (e) {
+                    e.stopPropagation();
+                    var $cur = $(this).parent();
+                    $.msg.confirm('确定要移除这张图片吗？', function () {
+                        var data = $cur.data('srcs');
+                        delete data[$cur.data('index')];
+                        $cur.data('input').value = JSON.stringify(data);
+                        $cur.remove();
+                    });
+                });
+                $(this).before($tpl);
+            }
+        });
+        var tpl1 = '<div class="uploadimage transition uploadimagemtl imglogo"></div>';
+        $('[name="imglogo"]').on('change', function () {
+            $('.imglogo').remove();
+            var $tpl1 = $(tpl1).css('backgroundImage', 'url(' + this.value + ')');
+            $(this).before($tpl1);
+        });
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}
+

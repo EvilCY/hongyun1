@@ -1,0 +1,418 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.28rem;
+}
+button {
+  display: block;
+  border: 0;
+  line-height: 0.88rem;
+  width: 6.6rem;
+  text-align: center;
+  height: 0.88rem;
+  margin: 0 auto;
+  background-image: linear-gradient(45deg, #82cfb8 0%, #68b59f 100%);
+  color: #fff;
+  border-radius: 0.5rem;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  font-size: 0.34rem;
+}
+.empty {
+  width: 100%;
+  text-align: center;
+  color: #333;
+}
+.empty span {
+  display: block;
+  width: 2.84rem;
+  margin: 10% auto;
+  height: 2.48rem;
+  background: url('../ico/empty.png') no-repeat center center;
+  background-size: contain;
+}
+.register {
+  width: 100%;
+  padding: 0.45rem;
+  height: 100vh;
+  overflow: auto;
+  background: url('../ico//header.png') no-repeat top center, url('../ico/footer.png') no-repeat bottom center, #fff;
+  background-size: 100% ;
+}
+.register .logo {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  margin: 0.6rem auto 0.4rem;
+}
+.register h1 {
+  font-size: 0.42rem;
+  color: #ff781c;
+  font-weight: bold;
+  text-align: center;
+}
+.register .title {
+  justify-content: space-evenly;
+  padding: 0.4rem;
+}
+.register .title span {
+  padding: 0.1rem 0;
+  color: #333;
+  font-size: 0.28rem;
+}
+.register .title .action {
+  color: #ff781c;
+  border-bottom: 1px solid #ff781c;
+}
+.register .type {
+  margin-bottom: 0.8rem;
+}
+.register ul {
+  margin: 0.3rem 0;
+}
+.register ul li {
+  border: 1px solid #ccc;
+  padding: 0.2rem 0;
+  margin-bottom: 0.3rem;
+  border-radius: 0.4rem;
+  -webkit-border-radius: 0.4rem;
+  -moz-border-radius: 0.4rem;
+  color: #333;
+  font-size: 0.3rem;
+}
+.register ul li span {
+  display: block;
+  width: 0.26rem;
+  height: 0.32rem;
+  margin: 0 0.3rem;
+}
+.register ul li .user {
+  background: url('../ico/user.png') no-repeat center center;
+  background-size: contain;
+}
+.register ul li .tel {
+  background: url('../ico/tel.png') no-repeat center center;
+  background-size: contain;
+}
+.register ul li .pwd {
+  background: url('../ico/pwd.png') no-repeat center center;
+  background-size: contain;
+}
+.register ul li .ico-code {
+  background: url('../ico/ico-code.png') no-repeat center center;
+  background-size: contain;
+}
+.register ul li input {
+  border: 0;
+  background: transparent;
+}
+.register ul li i {
+  color: #ff781c;
+  font-size: 0.3rem;
+  display: inline-block;
+  padding-right: 0.3rem;
+}
+.register .checklist {
+  font-size: 0.28rem;
+  padding: 0.2rem;
+}
+.register .checklist span {
+  display: block;
+  width: 0.3rem;
+  height: 0.3rem;
+  margin: 0 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 0.1rem;
+  -webkit-border-radius: 0.1rem;
+  -moz-border-radius: 0.1rem;
+}
+.register .checklist .span-checked {
+  background: url('../ico/checked.png') no-repeat center center;
+  background-size: contain;
+  border: 0;
+}
+.register .checklist a {
+  color: #ff781c;
+}
+.register .leave {
+  justify-content: center;
+  width: 100%;
+  padding: 0.2rem 0;
+  color: #ff6100;
+  font-size: 0.28rem;
+}
+.register .leave:before,
+.register .leave:after {
+  content: '';
+  display: inline-block;
+  width: 1.4rem;
+  height: 1px;
+  margin: 0 0.2rem;
+  background: #ff6100;
+}
+.member {
+  width: 100%;
+  /*background: url('../ico/head-bg.png') no-repeat top center;*/
+  /*background-size: 100%;*/
+}
+.member .member-title {
+  padding: 0.3rem 0 0.3rem 0.3rem;
+  color: #fff;
+  font-size: 0.48rem;
+}
+.member .member-title .portrait {
+  width:2.5rem;
+  margin: 0 0.2rem;
+}
+.member .member-title h1 {
+  height: 0.48rem;
+  line-height: 0.48rem;
+  padding: 0 0.1rem;
+  font-size: 0.24rem;
+}
+.member .member-title .vip_0 {
+  background: url('../ico/vip_1.png') no-repeat 0.1rem center;
+  background-size: contain;
+}
+.member .member-title .vip_1 {
+  background: url('../ico/vip_2.png') no-repeat 0.1rem center;
+  background-size: contain;
+}
+.member .member-title .vip_2 {
+  background: url('../ico/vip_3.png') no-repeat 0.1rem center;
+  background-size: contain;
+}
+.member .member-title span {
+  font-size: 0.26rem;
+  padding: 0.05rem 0 0 0.5rem;
+}
+.member .bill {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  width: 2.58rem;
+  height: 1.87rem;
+  background:url('../ico/icon-bill.png') no-repeat top right ;
+  background-size:2.58rem 1.87rem;
+  text-align: center;
+}
+.member .bill-a{
+  display: inline-block;
+  width: 70%;
+  float: right;
+  height: 1rem;
+}
+.member .member-content {
+  padding: 0.3rem;
+}
+.member .member-content .member-msg {
+  background: #fff;
+  border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  -moz-border-radius: 0.2rem;
+  padding: 0.2rem 0;
+  margin-bottom: 0.2rem;
+}
+.member .member-content .member-msg li {
+  justify-content: center;
+  padding: 0.15rem 0.3rem;
+  font-size: 0.26rem;
+  color: #666;
+}
+.member .member-content .member-msg li span {
+  display: block;
+  margin-right: 0.3rem;
+  width: 0.48rem;
+  height: 0.48rem;
+}
+.member .member-content .member-msg li .msg-team {
+  background: url('../ico/team.png') no-repeat center center;
+  background-size: contain;
+}
+.member .member-content .member-msg li .msg-num {
+  background: url('../ico/people.png') no-repeat center center;
+  background-size: contain;
+}
+.member .member-content .member-msg li h1 {
+  font-size: 0.38rem;
+  color: #333;
+  font-weight: bold;
+}
+.member .member-content .member-msg .areaNum {
+  align-items: flex-end;
+  justify-content: space-around;
+  font-size: 0.3rem;
+  color: #7288b9;
+}
+.member .member-content .member-msg .areaNum h2 {
+  color: #666;
+  font-size: 0.24rem;
+}
+.member .member-content .member-msg .areaNum .areaModel {
+  text-align: center;
+}
+.member .member-content .member-msg .areaNum img {
+  width: 1.48rem;
+  height: 1.4rem;
+}
+.member .member-content .member-msg .areaModel:nth-child(2) h1 {
+  color: #fe9b5d;
+}
+.member .member-content .member-msg .areaModel:nth-child(2) img {
+  width: 1.48rem;
+  height: 0.73rem;
+}
+.member .member-content .member-list {
+  background: #fff;
+  border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  -moz-border-radius: 0.2rem;
+  padding: 0.3rem;
+}
+.member .member-content .member-list h1 {
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  font-size: 0.32rem;
+  color: #333;
+}
+.member .member-content .member-list ul li {
+  font-size: 0.3rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #eee;
+}
+.member .member-content .member-list ul li img {
+  display: block;
+  width: 0.73rem;
+  height: 0.73rem;
+  margin-right: 0.25rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+.member .member-content .member-list ul li:last-child {
+  border: 0;
+}
+.member .member-btn {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.3rem;
+  width: 1.2rem;
+}
+.member .member-btn img {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0.3rem 0;
+}
+.popup {
+  position: fixed;
+  top: 0;
+  width: 6rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.popup .popup-content {
+  width: 100%;
+  color: #333;
+  font-size: 0.32rem;
+  border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  -moz-border-radius: 0.2rem;
+  background: #fff;
+}
+.popup .popup-content h1 {
+  font-size: 0.34rem;
+  background: #f5f5f5;
+  border-radius: 0.3rem 0.3rem 0 0;
+  -webkit-border-radius: 0.3rem 0.3rem 0 0;
+  -moz-border-radius: 0.3rem 0.3rem 0 0;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.3rem;
+}
+.popup .popup-content .rules {
+  text-align: left;
+  padding: 0.2rem;
+  max-height: 50vh;
+  overflow: auto;
+}
+.popup .popup-content .welfare-mess {
+  padding: 0.3rem;
+}
+.popup .popup-content .welfare-mess h3 {
+  color: #01B468;
+  line-height: 1.5;
+}
+.popup .popup-content .welfare-mess h4 {
+  background: #d2d2d2;
+  border-radius: 0.5rem;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  padding: 0.3rem;
+  margin: 0.3rem 0.2rem;
+}
+.popup .popup-content h2 {
+  padding: 0.05rem 0;
+  color: #01B468;
+  font-size: 0.3rem;
+}
+.popup .popup-content p {
+  line-height: 1.2;
+}
+.popup .close {
+  display: block;
+  width: 0.58rem;
+  height: 0.58rem;
+  margin: 0.5rem auto;
+}
+.share-invi {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0.45rem;
+  background: url('../ico/share-invi-bg.png') no-repeat fixed center;
+  background-size: 100% 100%;
+  font-size: 0.3rem;
+  color: #01B468;
+}
+.share-invi .logo {
+  width: 3.46rem;
+  display: block;
+  margin: 0.2rem auto;
+}
+.share-invi h1 {
+  font-size: 0.58rem;
+  color: #fff;
+  text-align: center;
+  margin: 0.1rem 0 0.3rem;
+}
+.share-invi .share-code {
+  background-image: linear-gradient(0deg, #ffeeea 0%, #ffffff 100%);
+  text-align: center;
+  padding: 0.4rem 0;
+  border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  -moz-border-radius: 0.2rem;
+}
+.share-invi .share-code h3 {
+  font-size: 0.58rem;
+  font-weight: bold;
+}
+.share-invi .share-code h4 {
+  font-size: 0.32rem;
+  color: #01B468;
+}
+.share-invi .share-code .line {
+  width: 100%;
+}
+.share-invi .share-code .coding {
+  width: 3rem;
+  height: 3rem;
+  display: block;
+  margin: 0.5rem auto;
+}
+.share-invi .share-code button {
+  color: #fff;
+  width: 3.2rem;
+}

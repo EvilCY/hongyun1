@@ -1,0 +1,32 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">手机号码</label>
+            <div class="layui-input-block">
+                <textarea name="tel" required lay-verify="required" placeholder="请输入手机号码:多个用英文逗号隔开例如：手机号1,手机号2,手机号3..." class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">选择加权</label>
+            <div class="layui-input-block">
+                <select required name="coupon_id">
+                    <option value="0">选择加权</option>
+                    {foreach $coupon as $k=>$v}
+                    <option value="{$k}">{$v}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>

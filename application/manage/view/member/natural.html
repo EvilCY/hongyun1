@@ -1,0 +1,27 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <textarea name="detail">{$detail}</textarea>
+                <script type="text/javascript">
+                    require([ 'ckeditor', 'angular'], function () {
+                        window.createEditor('[name="detail"]', {height: 800,width:900});
+                    })
+                </script>
+            </div>
+
+        </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit">保存数据</button>
+    </div>
+</form>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}

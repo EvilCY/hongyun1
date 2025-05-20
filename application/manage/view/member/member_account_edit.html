@@ -1,0 +1,54 @@
+<form class="layui-form layui-card" action="{:url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">用户</label>
+            <div class="layui-input-block">
+                <input type="text" readonly autocomplete="off" value='{$Think.get.tel}【{$Think.get.id}】' class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">币种</label>
+            <div class="layui-input-block">
+                <?php $account_type = config("account_mold"); ?>
+                <select name="cointype" required>
+                    <option value="">--请选择--</option>
+                    {foreach $account_type as $key=>$val}
+                    <option value="{$key}">{$val}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" checked name="type" value="1" title="增加">
+                <input type="radio"  name="type" value="2" title="减少">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数量</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="num" required value='' placeholder="请输入数量" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" name="desc" required value='系统操作' placeholder="请输入描述" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">二级密码</label>
+            <div class="layui-input-block">
+                <input type="password"  autocomplete="off" name="pwd" required  placeholder="请输入二级密码" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <input type='hidden' value='{$Think.get.id}' name='id'>
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script>form.render()</script>

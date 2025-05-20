@@ -1,0 +1,90 @@
+<style>
+    .uploadBox{
+        background-size:100% 100%;background-color: gainsboro; width:150px;height:100px;display: table-cell;vertical-align: middle;text-align: center;cursor: pointer;position: relative;
+    }
+</style>
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+        <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">供应商简称</label>
+            <div class="layui-input-block">
+                <input type="text" required autocomplete="off" name="supper_name" value='{$vo.supper_name|default=""}' placeholder="请输入供应商名称，此项会作为供应商登录凭证" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">联系人</label>
+            <div class="layui-input-block">
+                <input type="text" required autocomplete="off" name="uname" value='{$vo.uname|default=""}' placeholder="请输入收款人姓名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">联系电话</label>
+            <div class="layui-input-block">
+                <input type="text" required autocomplete="off" name="mobile" value='{$vo.mobile|default=""}' placeholder="请输入收款人手机号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">收款人全称</label>
+            <div class="layui-input-block">
+                <input type="text" required autocomplete="off" name="supper_name_all" value='{$vo.supper_name_all|default=""}' placeholder="请输入收款人手机号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">收款人账号</label>
+            <div class="layui-input-block">
+                <input type="text" required autocomplete="off" name="bank_no" value='{$vo.bank_no|default=""}' placeholder="请输入供应商名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">开户行</label>
+            <div class="layui-input-block">
+                <input type="text" required autocomplete="off" name="bank_name" value='{$vo.bank_name|default=""}' placeholder="请输入供应商名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">身份证</label>
+            <div class="layui-input-block">
+                <input type="text"  autocomplete="off" name="id_card" value='{$vo.id_card|default=""}' placeholder="请输入身份证" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">资料上传</label>
+            <div class="layui-input-block">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th class="text-center">店铺门头照</th>
+                        <th class="text-center">营业执照</th>
+                        <th class="text-center">开户许可证</th>
+                    </tr>
+                    <tr>
+                        <td width="auto" class="text-center"><input name="shop_img" type="hidden" value="{$vo.shop_img|default=''}"></td>
+                        <td width="auto" class="text-center"><input name="imgs" type="hidden" value="{$vo.imgs|default=''}"></td>
+                        <td width="auto" class="text-center"><input name="imgs2" type="hidden" value="{$vo.imgs2|default=''}"></td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <script>$('[name="shop_img"]').uploadOneImage(), $('[name="imgs"]').uploadOneImage(), $('[name="imgs2"]').uploadOneImage()</script>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">备注</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" name="remark" value='{$vo.remark|default=""}' placeholder="请输入备注" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+

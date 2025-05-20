@@ -1,0 +1,80 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="imgurl">
+                <a class="layui-btn layui-btn-normal btn-link" data-file="btn" data-field="imgurl" data-type="png,jpg,wgt,apk,jpeg,ipa" href="javascript:void(0)">上传图片</a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">类型</label>
+            <div class="layui-input-block">
+                {php}$ads_type = config('ads_type');{/php}
+                <select class="layui-input" name="type">
+                    {foreach $ads_type as $k=>$v}
+                    <option value="{$k}">{$v}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">链接类型</label>
+            <div class="layui-input-inline">
+                {php}$ads_link_type = config('ads_link_type');{/php}
+                <select class="layui-input" name="link_type">
+                    {foreach $ads_link_type as $k=>$v}
+                    <option value="{$k}">{$v}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">标题</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" name="title"  placeholder="标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">链接</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" name="link"  placeholder="链接地址" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">排序号</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="order_num"  value="0" placeholder="排序号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="显示" checked>
+                <input type="radio" name="status" value="0" title="隐藏">
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit">保存数据</button>
+    </div>
+</form>
+<script type="text/javascript">
+    require(['jquery'], function () {
+        var tpl1 = '<div class="uploadimage transition uploadimagemtl imglogo"></div>';
+        $('[name="imgurl"]').on('change', function () {
+            $('.imglogo').remove();
+            var $tpl1 = $(tpl1).css('backgroundImage', 'url(' + this.value + ')');
+            $(this).before($tpl1);
+        });
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}
+

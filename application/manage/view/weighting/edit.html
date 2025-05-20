@@ -1,0 +1,58 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">名称</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" name="name" value="{$vo.name|default=''}" placeholder="名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">分佣比例%</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="ratio" value="{$vo.ratio|default=''}" placeholder="价格" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-block">
+            {if condition="@$vo.imgurl"}
+            <div class="uploadimage transition uploadimagemtl imgurl" style="background-image: url('{$vo.imgurl|default=""}');"></div>
+            {/if}
+            <input type="hidden" name="imgurl" value='{$vo.imgurl|default=""}'>
+            <a class="layui-btn layui-btn-normal btn-link" data-file="btn" data-field="imgurl" data-type="png,jpg,wgt,apk,jpeg" href="javascript:void(0)">上传图片</a>
+        </div>
+    </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="开启" {if condition="@$vo.status eq 1"}checked{/if}>
+                <input type="radio" name="status" value="0" title="关闭" {if condition="@$vo.status eq 0"}checked{/if}>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type="submit">保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script type="text/javascript">
+        form.render()
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+    require(['jquery'], function () {
+        var tpl1 = '<div class="uploadimage transition uploadimagemtl imgurl"></div>';
+        $('[name="imgurl"]').on('change', function () {
+            $('.imgurl').remove();
+            var $tpl1 = $(tpl1).css('backgroundImage', 'url(' + this.value + ')');
+            $(this).before($tpl1);
+        });
+    });
+</script>
+{/block}
+

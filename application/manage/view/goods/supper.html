@@ -1,0 +1,109 @@
+{extend name="admin@main"}
+{block name="button"}
+<button data-modal='{:url("supper_edit")}' class='layui-btn layui-btn-primary'><i class="layui-icon">&#xe654;</i>添加供应商</button>
+{/block}
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left '>ID</th>
+        <th class='text-left '>供应商简称</th>
+        <th class='text-left '>联系人</th>
+        <th class='text-left '>联系电话</th>
+        <th class='text-left '>收款人全称</th>
+        <th class='text-left '>收款人账号</th>
+        <th class='text-left '>开户行</th>
+        <th class="text-left ">创建时间</th>
+        <th class="text-left ">备注</th>
+        <th class="text-left nowrap">图片</th>
+        <th class='text-left nowrap'>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left '>
+            {$vo.id}
+        </td>
+        <td class='text-left '>
+            {$vo['supper_name']}
+        </td>
+        <td class='text-left '>
+            {$vo['uname']}
+        </td>
+        <td class='text-left '>
+            {$vo['mobile']}
+        </td>
+        <td class='text-left '>
+            {$vo['supper_name_all']}
+        </td>
+        <td class='text-left '>
+            {$vo['bank_no']}
+        </td>
+        <td class='text-left '>
+            {$vo['bank_name']}
+        </td>
+        <td class='text-left '>
+            {$vo.create_time}
+        </td>
+        <td class='text-left '>
+            {$vo.remark}
+        </td>
+        <td class='text-left nowrap imgx'>  
+    {if $vo.shop_img neq ''}  
+        <a href="{$vo.shop_img}" target="_blank"><img src="{$vo.shop_img}"></a>  
+    {else}  
+        
+    {/if}  
+      
+    {if $vo.imgs neq ''}  
+        <a href="{$vo.imgs}" target="_blank"><img src="{$vo.imgs}"></a>  
+    {else}  
+        
+    {/if}  
+      
+    {if $vo.imgs2 neq ''}  
+        <a href="{$vo.imgs2}" target="_blank"><img src="{$vo.imgs2}"></a>  
+    {else}  
+        
+    {/if}  
+</td>
+        <td class='text-left nowrap '>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("supper_edit")}?id={$vo.id}'>编辑</a>
+            <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger"  onclick="del('{$vo.id}')" >删 除</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<style>.imgx img{width:40px;height:40px;border:none;margin:0 5px;display:inline-block}</style>
+<script>
+    function del(id) {
+        layer.confirm('如果删除的是顶级分类,下面的子类也会被删除,确认删除吗？', function(index){
+            $.ajax({
+                url: '/manage/goods/supper_del?id=' + id,
+                type: 'get',
+                async: false,
+                success: function (data) {
+                    if(data.status){
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            });
+
+            layer.close(index);
+        });
+    }
+</script>
+
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

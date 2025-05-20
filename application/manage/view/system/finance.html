@@ -1,0 +1,44 @@
+{extend name='admin@main'}
+
+{block name='content'}
+<table class="layui-table" lay-even lay-skin="line">
+    <colgroup>
+        <col width="20%">
+        <col width="30%">
+        <col width="20%">
+        <col width="30%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th class="text-left" colspan="2">数据统计</th>
+    </tr>
+    </thead>
+    {php}$usertype = config('vip_level');$account_type=config('account_type');{/php}
+    <tbody>
+    <tr>
+        <td>会员统计</td>
+        <td>总人数：{$member['total']}</td>
+    </tr>
+    <tr>
+        <td>会员明细</td>
+        <td>
+            {foreach $member['detail'] as $k=>$num}
+            {$usertype[$k]}：{$num} &emsp;
+            {/foreach}
+        </td>
+    </tr>
+    <tr>
+        <td>总资产</td>
+        <td>{$account['total']}</td>
+    </tr>
+    <tr>
+        <td>资产明细</td>
+        <td>
+            {foreach $account['detail'] as $k=>$num}
+            {$account_type[$k]}：{$num|floatval} &emsp;
+            {/foreach}
+        </td>
+    </tr>
+    </tbody>
+</table>
+{/block}

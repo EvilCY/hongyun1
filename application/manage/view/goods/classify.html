@@ -1,0 +1,98 @@
+{extend name="admin@main"}
+
+{block name="content"}
+<div class="margin-bottom-10 text-left">
+    <a class="layui-btn layui-btn-primary" data-dbclick data-title="上传素材" data-modal='{:url("classify_edit")}'><i class="layui-icon">&#xe654;</i> 添加</a>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th class='text-left nowrap'>名称</th>
+        <th class='text-left nowrap'>图标</th>
+        <th class="text-left nowrap">上级分类</th>
+        <th class="text-left nowrap">是否隐藏</th>
+        <th class="text-left nowrap">排序号</th>
+        <th class="text-left nowrap">创建时间</th>
+        <th class='text-left nowrap'>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo['name']}
+        </td>
+        <td class='text-left nowrap'>
+            <img class="loadable-img" style="width: 70px" src="{$vo.ico}" title="{$vo.name}"/>
+        </td>
+        <td class='text-left nowrap'>
+            {$vo['pid']==0?"[顶级分类]":$type[$vo['pid']]}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo['hide']?"隐藏":"显示"}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo['sort']}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time}
+        </td>
+        <td class='text-left nowrap'>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("classify_edit")}?id={$vo.id}'>编辑</a>
+            <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger"  onclick="del('{$vo.id}')" >删 除</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<!--<script>-->
+<!--setTimeout(function(){-->
+<!--// 获取所有带有 loadable-img 类的图片元素-->
+<!--const images = document.querySelectorAll('.loadable-img');-->
+
+<!--// 遍历每个图片元素-->
+<!--images.forEach(image => {-->
+<!--  const currentSrc = image.src;-->
+<!--  -->
+<!--  // 检查 src 是否不包含 .jpg-->
+<!--  if (!currentSrc.endsWith('.jpg')) {-->
+<!--    // 替换 src 属性-->
+<!--    image.src = 'upload/default.jpg';-->
+<!--  }-->
+<!--});-->
+<!--},100)-->
+<!--</script>-->
+
+<script>
+    function del(id) {
+        layer.confirm('如果删除的是顶级分类,下面的子类也会被删除,确认删除吗？', function(index){
+            $.ajax({
+                url: '/manage/goods/classify_del?id=' + id,
+                type: 'get',
+                async: false,
+                success: function (data) {
+                    if(data.status){
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            });
+
+            layer.close(index);
+        });
+    }
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

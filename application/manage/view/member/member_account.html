@@ -1,0 +1,100 @@
+{extend name="admin@main"}
+
+{block name="content"}
+<?php $cointype = config('account_mold'); ?>
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">用户</label>
+                <div class="layui-input-inline">
+                    <input value="{$info.tel}【{$info.id}】" readonly class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="cointype">
+                        {foreach $cointype as $k=>$v}
+                        {eq name='coin_type' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">数据源</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="db_type">
+                        <option <?php if($db_type == 1){echo 'selected';}?> value="1">最新数据</option>
+                        <option <?php if($db_type == 2){echo 'selected';}?> value="2">历史数据</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+            【账户】消费积分：{$info.integral} 贡献积分：{$info.points} 绿色积分：{$info.green_points} 福分:{$info.lot} 冻结福分:{$info.freeze_lot}
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>序号</th>
+        <th class='text-left nowrap'>类型</th>
+        <!--        <th class='text-left nowrap'>来源</th>-->
+        <th class='text-left nowrap'>数量</th>
+        <th class='text-left nowrap'>详情</th>
+        <th class='text-left nowrap'>时间</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    <?php $payment=config('payment'); ?>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {if condition="$coin_type==1"}
+            消费积分
+            {elseif condition="$coin_type==2"}
+            贡献积分
+            {elseif condition="$coin_type==3"}
+            绿色积分
+            {elseif condition="$coin_type==4"}
+            福分
+            {else/}
+            冻结福分
+            {/if}
+        </td>
+        <!--        <td class='text-left nowrap'>-->
+        <!--            {if condition='$vo.tel'}-->
+        <!--            {$vo.tel}-->
+        <!--            {else}-->
+        <!--            - - -->
+        <!--            {/if}-->
+        <!--        </td>-->
+        <td class='text-left nowrap'>
+            {$vo.num}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.desc}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

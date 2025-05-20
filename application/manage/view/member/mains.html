@@ -1,0 +1,61 @@
+{extend name='admin@main'}
+
+{block name='content'}
+<style>
+    .item{border: #e6e6e6 solid 1px;
+    font-size: 14px;
+    padding: 0 12px;
+    height: 32px;
+    line-height: 32px;
+    vertical-align: middle;
+    border-radius: 4px;
+   
+    color: #393939;
+   background-color:#1E9FFF;
+    border: 1px solid #1E9FFF;
+    color: #fff;
+        width:auto;
+        display: inline-block;
+        margin: 0px 8px 8px 0;
+        box-shadow: 0px 2px 4px rgba(25, 159, 189, 0.4);
+        
+       
+        
+    }
+</style>
+
+<div class="think-box-shadow store-total-container">
+    <div class="margin-bottom-15 item" style="font-size:14px;background-color:#d81e06;box-shadow:none;border:0">错误列表</div>
+    <div class="main" id="main" style="visibility: hidden;height:1px;">{$data}</div>
+    
+</div>
+<script>
+    
+    var content = document.querySelector('.main').textContent || document.querySelector('.main').innerText; // 获取文本内容  
+  
+// 使用split方法将数据字符串分割为数组，每个条目由'|'分隔  
+var entries = content.split('|');  
+  
+// 选择一个父元素，新的<div>将被添加到这里  
+// 假设你要将新的<div>添加到与.main同级或它的父级元素中  
+var parentElement = document.querySelector('.main').parentNode; // 或者使用其他选择器  
+  
+// 遍历每个条目  
+entries.forEach(function(entry) {  
+    // 跳过空条目（如果字符串以'|'开始或结束）  
+    if (!entry.trim()) return;  
+  
+    // 创建一个新的<div>元素  
+    var div = document.createElement('div');  
+    div.className = 'item'; // 设置class为'item'  
+  
+    // 去除每个条目首尾的空白字符并直接设置为<div>的内容（简单示例）  
+    // 如果你需要更复杂的解析，可以在这里添加额外的逻辑  
+    div.textContent = entry.trim(); // 设置文本内容  
+  
+    // 将新的<div>添加到父元素中  
+    parentElement.appendChild(div);  
+});
+    
+</script>
+{/block}

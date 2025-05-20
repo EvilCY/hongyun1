@@ -1,0 +1,96 @@
+{extend name='admin@main'}
+
+{block name='content'}
+<style>
+
+    .store-total-container {
+        font-size: 14px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .store-total-container .store-total-icon {
+        top: 45%;
+        right: 8%;
+        font-size: 65px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .store-total-container .store-total-item {
+        color: #fff;
+        line-height: 4em;
+        padding: 15px 25px;
+        position: relative;
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+    }
+
+</style>
+
+
+<div class="think-box-shadow store-total-container">
+    <div class="margin-bottom-15">用户拓扑图</div>
+    <div id="main" style="height:1000px"></div>
+</div>
+
+<script>
+    require(['echarts'], function (echarts, chart) {
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        const data = {:json_encode($data)};
+        option = {
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [
+                {
+                    type: 'tree',
+                    id: 0,
+                    name: 'tree1',
+                    data: [data],
+                    top: '10%',
+                    left: '8%',
+                    bottom: '22%',
+                    right: '20%',
+                    symbolSize: 7,
+                    //edgeShape: 'polyline',
+                    edgeForkPosition: '63%',
+                    initialTreeDepth: 10,
+                    lineStyle: {
+                        width: 3
+                    },
+                    label: {
+                        backgroundColor: '#fff',
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right',
+                        fontSize: 14,
+                    },
+                    leaves: {
+                        label: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left'
+                        }
+                    },
+                    emphasis: {
+                        focus: 'descendant'
+                    },
+                    expandAndCollapse: true,
+                    animationDuration: 550,
+                    animationDurationUpdate: 750
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+    });
+</script>
+{/block}

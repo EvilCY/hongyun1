@@ -1,0 +1,174 @@
+.mode-btn {
+  width: 6.5rem;
+  line-height: 0.88rem;
+  text-align: center;
+  display: block;
+  color: #fff;
+  font-size: 0.32rem;
+  border-radius: 0.5rem;
+}
+body {
+  height: 100vh;
+  width: 100%;
+}
+.reg {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(#e5fdf5 0%, #fff 70%, #fff 100%);
+}
+.reg .login-title {
+  text-align: center;
+  padding: 0.8rem 0 1rem;
+  color: #524f4f;
+  font-size: 0.42rem;
+}
+.reg .login-title .logo {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: block;
+  box-shadow: 1px 1px 0.1rem solid rgba(57, 169, 93, 0.36);
+  margin: 0 auto 0.2rem;
+}
+.reg .moblie-login {
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+.reg .moblie-login input {
+  background: transparent;
+  font-size: 0.3rem;
+}
+.reg .moblie-login .login-input {
+  height: 1rem;
+  line-height: 1rem;
+  border-bottom: 1px solid #E6E6E6;
+}
+.reg .moblie-login .img-input {
+  height: 0.36rem;
+  width: 0.36rem;
+  display: inline-block;
+  margin-right: 0.2rem;
+}
+.reg .moblie-login .get_code {
+  color: #FFAB29;
+  font-size: 0.3rem;
+  border-left: 1px solid #E6E6E6;
+  min-width: 1rem;
+  padding-left: 0.2rem;
+  display: inline-block;
+  text-align: center;
+}
+.reg .moblie-login .agreement {
+  justify-content: flex-start;
+  padding-top: 0.2rem;
+  color: #666;
+}
+.reg .moblie-login .agreement .circle {
+  border: 1px solid #FFAB29;
+  margin-right: 0.2rem;
+  border-radius: 50%;
+  width: 0.32rem;
+  height: 0.32rem;
+}
+.reg .moblie-login .agreement .agree-img {
+  width: 0.32rem;
+  height: 0.32rem;
+  margin-right: 0.2rem;
+}
+.reg .moblie-login .agreement .agreement-text {
+  color: #FFAB29;
+}
+.reg .moblie-login .open-eye {
+  width: 0.42rem;
+  height: 0.26rem;
+  background: url(https://static.yccjk.com/app/eye.png);
+  background-size: cover;
+  background-position: 0 0;
+}
+.reg .moblie-login .close-eye {
+  width: 0.42rem;
+  height: 0.26rem;
+  background-position: 0 0;
+  background: url(https://static.yccjk.com/app/eye.png);
+  background-size: cover;
+  background-position: -0.42rem 0;
+}
+.reg .submit_btn {
+  width: 6.5rem;
+  line-height: 0.88rem;
+  text-align: center;
+  display: block;
+  color: #fff;
+  font-size: 0.32rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(270deg, #FFAB29, #FFAB29, #FFAB29);
+  margin: 0.6rem auto 0;
+}
+.reg .downText {
+  padding: 0.3rem 0;
+  text-align: center;
+}
+.reg .downText .text {
+  color: #FFAB29;
+}
+.container {
+  background: linear-gradient(#ffa10f, #f1d9b3);
+}
+.condown {
+  width: 100%;
+  min-height: 100vh;
+  /*background: url(icon_down_bg.png) no-repeat top center;*/
+  background-size: 7.5rem 6.47rem;
+}
+.condown .head {
+  padding: 1.5rem 0 1rem;
+  text-align: center;
+  font-size: 0.32rem;
+  color: #fff;
+}
+.condown .head img {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  box-shadow: 0 5px 7px #eee;
+}
+.condown .btn {
+  padding: 0 0.7rem;
+}
+.condown .btn a {
+  border: 1px solid #fff;
+  padding: 0.3rem;
+  justify-content: center;
+  border-radius: 0.8rem;
+  margin-bottom: 0.3rem;
+  background: transparent;
+  font-size: 0.38rem;
+  font-weight: 300;
+  color: #fff;
+}
+.condown .btn a span {
+  display: inline-block;
+  width: 0.44rem;
+  height: 0.56rem;
+  margin: 0 0.3rem;
+}
+.condown .btn a .and_logo {
+  background: url(icon_and_logo.png) no-repeat center center;
+  background-size: contain;
+}
+.condown .btn a .ios_logo {
+  background: url(icon_ios_logo.png) no-repeat center center;
+  background-size: contain;
+}
+.condown .code {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.28rem;
+}
+.condown .code img {
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 5px solid #fff;
+  margin-bottom: 0.2rem;
+  border-radius: 0.1rem;
+}

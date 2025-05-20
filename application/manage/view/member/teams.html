@@ -1,0 +1,194 @@
+{extend name='admin@main'}
+
+{block name='content'}
+<style>
+
+    .store-total-container {
+        font-size: 14px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .store-total-container .store-total-icon {
+        top: 45%;
+        right: 8%;
+        font-size: 65px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .store-total-container .store-total-item {
+        color: #fff;
+        line-height: 4em;
+        padding: 15px 25px;
+        position: relative;
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+    }
+
+</style>
+
+
+<div class="think-box-shadow store-total-container">
+    <div class="margin-bottom-15">团队拓扑图</div>
+    <div id="main" style="height:1000px"></div>
+</div>
+
+<script>
+
+function cleanData(node) {
+    // 如果没有子节点，直接返回
+    if (!node.children || node.children.length === 0) {
+        return node;
+    }
+
+    // 用于存储新的子节点
+    const newChildren = [];
+
+    for (let child of node.children) {
+        if (child.value === 0) {
+            // 如果子节点的 value 为 0，收集其符合条件的子节点
+            newChildren.push(...child.children.filter(grandChild => grandChild.value > 0 ));
+        } else {
+            // 如果子节点的 value 不为 0，直接加入新子节点列表
+            newChildren.push(child);
+            // 递归清理子节点
+            cleanData(child);
+        }
+    }
+
+    // 替换当前节点的 children
+    node.children = newChildren;
+
+    return node;
+}
+
+function removeNodesWithValueZero(node) {  
+    // 如果没有子节点，或者子节点已经被清理过，直接返回  
+    if (!node.children || node.children.length === 0) {  
+        return;  
+    }  
+  
+    // 使用 filter 方法结合递归调用来创建一个新数组  
+    node.children = node.children.filter(child => {  
+        // 递归清理子节点  
+        removeNodesWithValueZero(child);  
+  
+        // 如果当前节点的 value 不为 0，或者它虽然没有 value 但有非零值的子节点，则保留它  
+        return child.value !== 0 || (child.value === 0 && child.children && child.children.some(grandChild => grandChild.value !== 0));  
+    }).map(child => {  
+        // 如果子节点的 value 为 0 且没有非零值的子节点，我们需要将其子节点（如果有的话）提升到当前层级  
+        if (child.value === 0 && child.children && child.children.length > 0) {  
+            // 返回子节点的数组，这些子节点将被添加到父节点的 children 中  
+            return child.children;  
+        }  
+        // 否则，直接返回子节点  
+        return child;  
+    }).flat(Infinity); 
+}  
+
+
+function replaceValues(data) {  
+    // 检查当前节点是否为对象  
+    if (typeof data === 'object' && data !== null) {  
+        // 遍历对象的每个属性  
+        for (let key in data) {  
+            if (data.hasOwnProperty(key)) {  
+                // 如果当前属性是children，并且是一个数组，则递归处理每个子项  
+                if (key === 'children' && Array.isArray(data[key])) {  
+                    data[key].forEach(child => replaceValues(child));  
+                }  
+                // 如果当前属性是value，则根据值进行替换  
+                else if (key === 'value') {  
+                    if (data[key] === 1) {  
+                        data[key] = '市代';  
+                    } else if (data[key] === 2) {  
+                        data[key] = '驿站';  
+                    } else{ data[key] = '会员';} 
+                }  
+                // 如果当前属性不是children或value，但仍然是对象，则递归处理  
+                else if (typeof data[key] === 'object' && data[key] !== null) {  
+                    replaceValues(data[key]);  
+                }  
+            }  
+        }  
+    }  
+}  
+
+    require(['echarts'], function (echarts, chart) {
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+
+        const data = {:json_encode($data)};
+        //cleanData(data);
+        //removeNodesWithValueZero(data)
+        replaceValues(data)
+//alert(JSON.stringify(data));
+
+
+
+        option = {
+            tooltip: {  
+    trigger: 'item',  
+    triggerOn: 'mousemove',  
+    formatter: function (params) {  
+        // 假设每个节点数据对象都有 'name' 和 'VALUE' 属性  
+        // 直接从 params.data 中获取这些值  
+        var name = params.data.name;  
+        var value = params.data.value; // 注意这里是大写的 'VALUE'，确保它与你的数据中的属性名一致  
+  
+        // 返回 name 和 value 的字符串表示  
+        return `${name}: ${value || '自己'}`; // 如果 value 不存在或为空，则显示 '无值'  
+    }  
+},
+            series: [
+                {
+                    type: 'tree',
+                    id: 0,
+                    name: 'tree1',
+                    data: [data],
+                    top: '10%',
+                    left: '8%',
+                    bottom: '22%',
+                    right: '20%',
+                    symbolSize: 40,
+                    symbol : 'image://https://shop.gxqhydf520.com/upload/e3512c6bc538ea98/star1.png',
+                    //edgeShape: 'polyline',
+                    edgeForkPosition: '63%',
+                    initialTreeDepth: 10,
+                    lineStyle: {
+                        width: 3
+                    },
+                    label: {
+                        backgroundColor: '#fff',
+                        position: 'left',
+                        verticalAlign: 'middle',
+                        align: 'right',
+                        fontSize: 14,
+                    },
+                    leaves: {
+                        label: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left'
+                        }
+                    },
+                    emphasis: {
+                        focus: 'descendant'
+                    },
+                    expandAndCollapse: true,
+                    animationDuration: 550,
+                    animationDurationUpdate: 750
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+    });
+</script>
+{/block}

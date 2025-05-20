@@ -1,0 +1,375 @@
+/*公共css*/
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+
+  /* 在X5新内核Blink中，在排版页面的时候，会主动对字体进行放大，会检测页面中的主字体，当某一块字体在我们的判定规则中，认为字号较小，并且是页面中的主要字体，就会采取主动放大的操作。然而这不是我们想要的，可以采取给最大高度解决 */
+  max-height: 100000px;
+}
+
+textarea{
+  display: table;
+}
+*, *:before, *:after {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.lt {
+  float: left;
+}
+.rt {
+  float: right;
+}
+
+ul,
+li,
+ol,
+dl {
+  list-style: none;
+  border: none;
+  text-decoration: none;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+a,
+a:hover {
+  color: #000;
+  text-decoration: none;
+}
+a {
+  color: inherit;
+}
+select {
+ /* appearance: none;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  -moz-appearance: none;
+  -o-appearance: none;*/
+  border: none;
+}
+input {
+  margin: 0;
+  padding: 0;
+  /*-webkit-appearance: none;
+  -webkit-border-radius: 0;
+  -moz-appearance: none;
+  -o-appearance: none;*/
+  border: none;
+}
+
+img {
+  max-width:100%;
+  vertical-align:middle;
+  display: inline
+}
+.container {
+  max-width: 750px;
+  margin: auto;
+  min-height: 100%;
+  position: relative;
+  display: block;
+  background-size: 100% 100%;
+  -webkit-box-sizing: border-box;
+  min-width: 320px;
+}
+.rmb {
+  color: #f10;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="checkbox"] {
+  -moz-appearance: checkbox;
+  -webkit-appearance: checkbox;
+  background-color: initial;
+  margin: 3px 0.5ex;
+  padding: initial;
+  border: initial;
+}
+.sku {
+  display: none;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  top: 40%;
+  left: 20%;
+  right: 20%;
+  z-index: 25;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 3px 3px rgba(150, 150, 150, 0.7);
+  box-shadow: 0 0 3px 3px rgba(150, 150, 150, 0.7);
+}
+.suspend {
+  display: none;
+  text-align: center;
+  position: fixed;
+  top: 40%;
+  left: 20%;
+  right: 20%;
+  z-index: 25;
+}
+
+/* 底部菜单栏 */
+.menu {
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  border-top: 1px solid #F1F1F1;
+}
+.menu ul li {
+  float: left;
+  width: 25%;
+  text-align: center;
+  background: #ffffff;
+  padding: 5px 0;
+  font-size: 10px;
+}
+.menu ul li a {
+  color: #454545;
+}
+.menu ul li a span {
+  display: block;
+}
+/* 购物车 */
+.menu ul li a .cart {
+  position: relative;
+  width: 30px;
+  margin: 0 auto;
+}
+/* 数量样式 */
+.menu ul li a .cart .bage {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: inline-block;
+  background: #e4393c;
+  color: #fff;
+  font-size: 7px;
+  margin-left: -10px;
+  line-height: 9px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 1px 3px;
+  font-weight: bold;
+  font-style: normal;
+}
+.text-center{
+  text-align: center;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.text-left{
+  text-align: left;
+}
+
+
+*:before, *:after {
+  box-sizing: border-box;
+  max-height: 100000px;
+}
+textarea{
+  display: table;
+}
+*, *:before, *:after {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  -moz-box-sizing: border-box;  /*Firefox3.5+*/
+  -webkit-box-sizing: border-box; /*Safari3.2+*/
+  -o-box-sizing: border-box; /*Opera9.6*/
+  -ms-box-sizing: border-box; /*IE8*/
+  box-sizing: border-box; /*W3C标准(IE9+，Safari5.1+,Chrome10.0+,Opera10.6+都符合box-sizing的w3c标准语法)*/
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+}
+body {
+  line-height: 1.5;
+  /*流畅滚动*/
+  -webkit-overflow-scrolling:touch;
+  background: #F1F1F1;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  /*font: inherit;*/
+  font-family: Microsoft YaHei, Arial, serif !important;
+  font-size: 14px;
+}
+/*禁止长按显示菜单栏*/
+a,img{
+  -webkit-touch-callout:none;
+}
+img {
+  border: none;
+  vertical-align: middle;
+  max-width: 100%;
+}
+a {
+  text-decoration: none;
+  color: #333;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+input, textarea, select, button {
+  outline: none;
+  vertical-align: middle;
+  font-size: inherit;
+  font-family: inherit;
+}
+textarea {
+  resize: none;
+  overflow-y: auto;
+}
+input[type="submit"], input[type="reset"], input[type="button"], button {
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+hr {
+  height: 0;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  margin: 0;
+  color: #ddd;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  margin: 0;
+}
+table {
+  /*border-collapse: collapse;*/
+  border-spacing: 0;
+}
+ul, ol, li {
+  list-style: none;
+  -webkit-padding-start: 0
+}
+dt, dd {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.hide{
+  display: none;
+}
+
+
+/*遮罩层*/
+.popup_layer,.mask{
+  position:fixed;
+  bottom: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  text-align:center;
+  background:rgba(0,0,0,0.6);
+  z-index:9;
+}
+
+
+/* 弹性布局 */
+.flex-box{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  box-align:center;
+  -moz-box-align:center;
+  -webkit-box-align:center;
+}
+.box-1{
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  min-width: 0;
+}
+.box-2{
+  -webkit-box-flex: 2;
+  -webkit-flex: 2;
+  flex: 2;
+  min-width: 0;
+}
+
+
+/*绘制三角形*/
+.after{
+	content: "";
+	width: 0;
+	height: 0;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	border: 5px solid;
+	border-color: transparent transparent #fff;
+} 
+
+/*单行省略*/
+.one_ell{
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow:ellipsis;/*显示省略号表示被修剪的文本*/
+
+}
+.two_ell{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+/*3行省略*/
+.more_ell{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* 瀑布流样式 */
+.waterfall{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width:100%;
+}
+.waterfall-box{
+  column-count: 2;
+}
+.waterfall-item{
+  break-inside: avoid;
+}
+

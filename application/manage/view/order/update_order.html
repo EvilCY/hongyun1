@@ -1,0 +1,34 @@
+{php}$kuaidi = config('kuaidi');{/php}
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">选择快递</label>
+            <div class="layui-input-block">
+                <select class="select" name="tran_type">
+                    {foreach $kuaidi as $k=>$v}
+                    <option value="{$k}"  {if condition="$k eq @$vo.tran_type"}selected{/if}>{$k}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">快递单号</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" value='{$vo.tran_sn|default=""}' name="tran_sn" placeholder="请输入发货快递单号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">备注说明</label>
+            <div class="layui-input-block">
+            <textarea  class="layui-textarea"  name="tran_note" placeholder="请输入发货备注,多个快递: 橙子1;橘子2..." >{$vo.tran_note|default=""}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.order_id'}<input type='hidden' value='{$vo.order_id}' name='order_id'>{/notempty}
+        <button class="layui-btn" type='submit'>确认发货</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>关闭</button>
+    </div>
+    <script>window.form.render();</script>
+</form>

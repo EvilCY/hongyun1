@@ -1,0 +1,110 @@
+{extend name="admin@main"}
+{block name="button"}
+<button data-action='{:url("message_del")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除</button>
+{/block}
+{block name="content"}
+{php}
+$status = [1 => '投诉',2 => '建议'];
+$status_label =[0 => 'layui-bg-blue',1 => 'layui-bg-orange',2 => 'layui-bg-green'];
+{/php}
+
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">联系手机</label>
+                <div class="layui-input-inline">
+                    <input name="account" value="{$Think.get.account|default=''}" placeholder="请输入手机号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <select name="status">
+                        <option value="">全部</option>
+                        {foreach $status as $k=>$v}
+                        {eq name='Think.get.status' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </form>
+
+    </fieldset>
+    <script>form.render()</script>
+</div>
+
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap'>ID</th>
+        <th class='text-left nowrap'>账户</th>
+        <th class='text-left nowrap'>内容</th>
+        <th class='text-left nowrap'>类型</th>
+        <th class='text-left nowrap'>图片</th>
+        <th class='text-left nowrap'>添加时间</th>
+        <th class='text-left nowrap'>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='list-table-check-td think-checkbox'>
+            <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.tel}
+        </td>
+        <td class='text-left nowrap' onclick="content_open('{$vo[\'content\']}')">
+            {$vo.content|mb_substr=0,20}
+        </td>
+        <td class='text-left nowrap'>
+            <span class="layui-badge {:$status_label[$vo['type']]}">{:$status[$vo.type]}</span>
+        </td>
+        <td class='text-left nowrap test'>
+            {if condition = "$vo['imge']"}
+            <?php $imgurl = json_decode($vo['imge']);?>
+            {foreach $imgurl as $k =>$v}
+            <img src="{$v}" style="width: 40px; height: 80px">
+            {/foreach}
+            {else}
+            --
+            {/if}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.add_time}
+        </td>
+        <td class='text-left nowrap'>
+            <a class="layui-btn layui-btn-danger layui-btn-sm"  data-confirm="确定要删除吗？" data-action="{:url('message_del')}" data-value="id#{$vo.id}">删除</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    layer.photos({
+        photos: '.test'
+        ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+    });
+    function content_open($content){
+        layer.alert($content)
+    }
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

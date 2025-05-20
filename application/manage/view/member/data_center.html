@@ -1,0 +1,208 @@
+{extend name='admin@main'}
+{block name="button"}
+<button class="layui-btn layui-btn-danger" data-modal='{:url("machine_lock")}' data-title="一键平仓">一键平仓</button>
+<a href="{:url('export_data_center')}?type={$Think.get.type}&end_time={$Think.get.end_time}" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe601;</i> 导 出</a>
+{/block}
+{block name='content'}
+{php}$is_vip = [0=>'当日',1=>'昨日',2=>'7天前到昨天',3=>'30天前到昨天',4=>'本月1号到昨天',5=>'上个月1号到本月1号',6=>'本年1号到昨天',7=>'全部历史日期到昨天'];$is_vipx = [0=>'资产情况',1=>'会员情况',2=>'预约情况',3=>'销售情况']{/php}
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <!--
+			<div class="layui-form-item layui-inline">
+                <label class="layui-form-label">模块</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="typex">
+                        {foreach $is_vipx as $k=>$v}
+                        {eq name='Think.get.typex' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+			-->
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">时间</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="type">
+                        {foreach $is_vip as $k=>$v}
+                        {eq name='Think.get.type' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">自定义时间</label>
+                <div class="layui-input-inline">
+                    <input data-date-range name="end_time" value="{$Think.get.end_time|default=''}" placeholder="请选择时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>资产情况</legend>
+</fieldset>
+
+<div class="layui-form">
+    <table class="layui-table" style="width: auto" lay-skin="nob">
+        <colgroup>
+            <col width="150">
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>新增充值额</td>
+            <td>{$rechargeBal}</td>
+            <td>新增消费积分</td>
+            <td>{$integral}</td>
+            <td>新增绿色积分</td>
+            <td>{$green_points}</td>
+
+        </tr>
+        <tr>
+            <td>新增福分</td>
+            <td>{$lot}</td>
+            <td>新增冻结福分</td>
+            <td>{$freeze_lot}</td>
+            <td>新增提现</td>
+            <td>{$withdraw}</td>
+            <td>新增贡献积分</td>
+            <td>{$points}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>会员情况</legend>
+</fieldset>
+
+<div class="layui-form">
+    <table class="layui-table" style="width: auto" lay-skin="nob">
+        <colgroup>
+            <col width="150">
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>新增驿站代理</td>
+            <td>{$station_agent}</td>
+            <td><a href="/admin.html#/manage/member/index?station_agent=1">查看驿站代理详情</a></td>
+            <td>新增城市代理</td>
+            <td>{$city_agency}</td>
+            <td><a href="/admin.html#/manage/member/index?city_agency=1">查看城市代理详情</a></td>
+        </tr>
+        <tr>
+            <td>新增行政区代理(区县级)</td>
+            <td>{$v1}</td>
+            <td><a href="/admin.html#/manage/member/index?vip_level=1">查看行政区代理(区县级)</a></td>
+            <td>新增行政区代理(市级)</td>
+            <td>{$v2}</td>
+            <td><a href="/admin.html#/manage/member/index?vip_level=2">查看行政区代理(市级)</a></td>
+        </tr>
+        <tr>
+            <td>新增会员数</td>
+            <td>{$newMember}</td>
+            <td>体验会员</td>
+            <td>{$Member}</td>
+            <td>正式会员</td>
+            <td>{$vipMember}</td>
+            <td><a href="/admin.html#/manage/member/index">查看会员新增详情</a></td>
+        </tr>
+        <tr>
+            <td>新增健康大使</td>
+            <td>{$totalNum}</td>
+            {foreach $weight_list as $k=>$info}
+            <td>{$info['name']}</td>
+            <td>{$info['num']}</td>
+            {/foreach}
+            <td><a href="/admin.html#/manage/weighting/member_list">查看健康大使详情</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>预约情况</legend>
+</fieldset>
+
+<div class="layui-form">
+    <table class="layui-table" style="width: auto" lay-skin="nob">
+        <colgroup>
+            <col width="150">
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>预约单量</td>
+            <td>{$Order}</td>
+            <td>预约额</td>
+            <td>{$OrderBal}</td>
+            <td>中单量</td>
+            <td>{$machineOrder}</td>
+            <td><a href="/admin.html#/manage/machine/machine_order">查看预约详情</a></td>
+
+        </tr>
+        <tr>
+            <td>中单额</td>
+            <td>{$machineBal}</td>
+            <td>中单发放福分</td>
+            <td>{$order_lot}</td>
+            <td>未中单量</td>
+            <td>{$orderNo}</td>
+            <td>未中单发放福分</td>
+            <td>{$sendLot}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>销售情况</legend>
+</fieldset>
+
+<div class="layui-form">
+    <table class="layui-table"  style="width: auto" lay-skin="nob">
+        <colgroup>
+            <col width="150">
+            <col width="150">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>成交额</td>
+            <td>{$mallBal}</td>
+            <td>家用专区</td>
+            <td>{$jiayong}</td>
+            <td>兑换专区</td>
+            <td>{$exchange}</td>
+            <td><a href="/admin.html#/manage/order/index?goods_type=3">查看兑换详情</a></td>
+        </tr>
+        <tr>
+            <td>成交单量</td>
+            <td>{$mallOrder}</td>
+            <td>养生专区</td>
+            <td>{$yangsheng}</td>
+            <td>农特专区</td>
+            <td>{$nongte}</td>
+            <td><a href="/admin.html#/manage/order/index">查看订单详情</a></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+{/block}

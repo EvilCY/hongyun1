@@ -1,0 +1,62 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">版本号</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" value="{$info.version}" name="version"  placeholder="版本号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">标题</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" value="{$info.title}" name="title"  placeholder="版本标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">简介</label>
+            <div class="layui-input-block">
+                <textarea  autocomplete="off" name="descr" placeholder="版本简介，使用\n换行" class="layui-textarea">{$info.descr}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">Android</label>
+            <div class="layui-input-block">
+                <input type="text"  autocomplete="off" value="{$info.dlink_android}"  name="dlink_android"  placeholder="下载链接（安卓）" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">IOS</label>
+            <div class="layui-input-block">
+                <input type="text"  autocomplete="off" value="{$info.dlink_ios}" name="dlink_ios"  placeholder="下载链接（IOS）" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">强制安装</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_force" value="1" title="是" {if condition="$info.is_force eq 1"}checked{/if}>
+                <input type="radio" name="is_force" value="0" title="否" {if condition="$info.is_force eq 0"}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">立即发布</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="是" {if condition="$info.status eq 1"}checked{/if}>
+                <input type="radio" name="status" value="0" title="否" {if condition="$info.status eq 0"}checked{/if}>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <input type="hidden" name="id" value="{$info.id}"/>
+        <button class="layui-btn" type="submit">保存数据</button>
+    </div>
+</form>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}

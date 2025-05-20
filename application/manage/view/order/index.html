@@ -1,0 +1,256 @@
+{extend name='admin@main'}
+{block name="button"}
+{/block}
+
+{block name="content"}
+{php}$order_status = config('ORDER_STATUS');$pay_status = config('PAY_STATUS');$order_status_manage = config('order_status_manage');$order_pay = config('order_pay');$goods_type = config('goods_type'){/php}
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" id="seach" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">会员手机号</label>
+                <div class="layui-input-inline">
+                    <input name="tell" value="{$Think.get.tell|default=''}" placeholder="请输入手机号码" class="layui-input">
+                </div>
+            </div>
+<!--            <div class="layui-form-item layui-inline">-->
+<!--                <label class="layui-form-label">起止时间</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input data-date-range name="date" value="{$Think.get.date|default=''}" placeholder="请选择时间" class="layui-input">-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">订单状态</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="order_status">
+                        <option value="">全部</option>
+                        {foreach $order_status_manage as $k=>$v}
+                        {eq name='Think.get.order_status' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">交易状态</label>
+                <div class="layui-input-inline">
+                <select name="is_off">
+                    <option value="">全部</option>
+                    {foreach $order_pay as $k=>$v}
+                    {eq name='Think.get.is_off' value='$k.""'}
+                    <option selected value="{$k}">{$v}</option>
+                    {else}
+                    <option value="{$k}">{$v}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">支付方式</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="pay_type">
+                        <option value="">全部</option>
+                        {foreach $pay_status as $k=>$v}
+                        {eq name='Think.get.pay_type' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            {if condition='$authorize !=8'}
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">供应商</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="store_id">
+                        <option value="">全部</option>
+                        {foreach $mall_list as $k=>$v}
+                        {eq name='Think.get.store_id' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            {/if}
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">订单分区</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="goods_type">
+                        <option value="">全部</option>
+                        {foreach $goods_type as $k=>$v}
+                        {eq name='Think.get.goods_type' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">商品</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="goods_id" lay-search="">
+                        <option value="">全部</option>
+                        {foreach $goods as $k=>$v}
+                        {eq name='Think.get.goods_id' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">下单时间</label>
+                <div class="layui-input-inline">
+                    <input data-date-range name="end_time" value="{$Think.get.end_time|default=''}" placeholder="请选择时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">收件人手机号</label>
+                <div class="layui-input-inline">
+                    <input name="tel" value="{$Think.get.tel|default=''}" placeholder="请输入手机号码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">模糊搜索</label>
+                <div class="layui-input-inline">
+                    <input name="so" value="{$Think.get.so|default=''}" placeholder="输入订单ID,订单号或收货地区" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">运单号</label>
+                <div class="layui-input-inline">
+                    <input name="tran_sn" value="{$Think.get.tran_sn|default=''}"  placeholder="输入运单号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <a href="{:url('out_goods_excel')}?tell={$Think.get.tell}&tel={$Think.get.tel}&order_status={$Think.get.order_status}&is_off={$Think.get.is_off}&pay_type={$Think.get.pay_type}&goods_type={$Think.get.goods_type}&so={$Think.get.so}&store_id={$Think.get.store_id}&goods_id={$Think.get.goods_id}&end_time={$Think.get.end_time}&tran_sn={{$Think.get.tran_sn}}" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe601;</i> 导 出</a>
+                <a class="layui-btn layui-btn-primary" data-dbclick data-title="批量发货" data-open='{:url("deliver_goods")}'><i class="layui-icon">&#xe654;</i> 批量发货</a>
+            </div>
+        </form>
+
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>订单ID</th>
+        <th class='text-left nowrap'>订单编号</th>
+        <th class='text-left nowrap'>购买会员</th>
+        <th class='text-left nowrap'>供应商</th>
+        <th class='text-left nowrap'>订单总额</th>
+        <th class='text-left nowrap'>优惠券抵扣</th>
+        <th class='text-left nowrap'>实付积分</th>
+        <th class='text-left nowrap'>供货价</th>
+        <th class='text-left nowrap'>支付方式</th>
+        <th class='text-left nowrap'>订单类型</th>
+        <th class='text-left nowrap'>订单状态</th>
+        <th class='text-left nowrap'>下单时间</th>
+        <th class='text-left nowrap'>快递单号</th>
+        <th class='text-left nowrap'>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>{$vo.order_id}</td>
+        <td class='text-left nowrap'>{$vo.order_sn}</td>
+        <td class='text-left nowrap test'>{$vo.name}【{$vo.tels}】({$vo.member_id})</td>
+        <td class='text-left nowrap'>
+            <o title="{$vo['supper_name_all']}">{$vo['supper_name']}</o>
+        </td>
+        <td class='text-left nowrap'>￥{$vo.order_amount}</td>
+        <td class='text-left nowrap'>￥{$vo.order_bal_amount}</td>
+        <td class='text-left nowrap'>￥{$vo.amount}</td>
+        <td class='text-left nowrap'>￥{$vo.pay_mchid}</td>
+        <td class='text-left nowrap'>{:$pay_status[$vo['pay_type']]}</td>
+        <td class='text-left nowrap'>
+           {$goods_type[$vo['goods_type']]}订单
+        </td>
+        <td class='text-left nowrap'>
+            <span class="label label-{$order_status[$vo['order_status']]['label']}">{:$order_status[$vo['order_status']]['name']}</span>
+        </td>
+        <td class='text-left nowrap'>{$vo.add_time}</td>
+        <td class='text-left nowrap'>{$vo.tran_sn}</td>
+        <td class='text-left nowrap'>
+            {if $vo['order_status'] ==1 }
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-modal='{:url("on_order")}?order_id={$vo.order_id}'>发货</a>
+            {if condition='$authorize !=8'}
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-modal='{:url("edit_address")}?order_id={$vo.order_id}'>编辑地址</a>
+            {/if}
+            {/if}
+            <a class="layui-btn layui-btn-sm" data-modal='{:url("order_info")}?order_id={$vo.order_id}'>详情</a>
+            {if $vo['order_status'] >1}
+            <a class="layui-btn layui-btn-normal layui-btn-sm" data-modal='{:url("update_order")}?order_id={$vo.order_id}'>编辑快递信息</a>
+            {/if}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+<script>
+    function order_refund(id){
+        layer.confirm('你确定对该订单进行退款处理吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $.get("{:url('refund')}",{order_id:id},function (data) {
+                if(data.status){
+                    layer.msg(data.code,{time:2000,icon:1},function () {
+                        location.reload();
+                    })
+                }else{
+                    layer.msg(data.code,{time:2000,icon:2})
+                }
+            });
+        }, function(){
+            layer.msg('你已取消该操作!', {
+                time: 2000, //2s后自动关闭
+                icon: 2
+            });
+        });
+    }
+    function del_order(id){
+        layer.confirm('【谨慎操作】：确认要删除此订单吗？删除不可撤回！', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $.get("{:url('del_order')}",{order_id:id},function (data) {
+                if(data.status){
+                    layer.msg(data.code,{time:2000,icon:1},function () {
+                        location.reload();
+                    })
+                }else{
+                    layer.msg(data.code,{time:2000,icon:2})
+                }
+            });
+        }, function(){
+            layer.msg('你已取消该操作!', {
+                time: 2000, //2s后自动关闭
+                icon: 2
+            });
+        });
+    }
+    layer.photos({
+        photos: '.test'
+        ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+    });
+</script>
+{/block}

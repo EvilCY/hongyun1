@@ -1,0 +1,84 @@
+{extend name="admin@main"}
+{block name="content"}
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">{$info['tel']}【{$info['id']}】的团队</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">联系手机</label>
+            <div class="layui-input-inline">
+                <input name="tel" value="{$Think.get.tel|default=''}" placeholder="请输入手机号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>&emsp;
+            <span class="layui-badge layui-bg-blue">团队人数:{$info['group_num']}</span>&emsp;
+            <span class="layui-badge layui-bg-orange">团队业绩:{$info['group_merits']|floatval}</span>&emsp;
+        </div>
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+{php}$vip = config('vip_level');{/php}
+<div class="layui-tab-content">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table class="layui-table" lay-skin="line">
+                {notempty name="list"}
+                <thead>
+                <tr>
+                    <th class='text-left nowrap'>ID</th>
+                    <th class='text-left nowrap'>账户</th>
+                    <th class='text-left nowrap'>等级</th>
+                    <th class='text-left nowrap'>个人业绩</th>
+                    <th class='text-left nowrap'>团队业绩</th>
+                    <th class='text-left nowrap'>总业绩</th>
+                    <th class='text-left nowrap'>状态</th>
+                    <th class='text-left nowrap'>注册时间</th>
+                </tr>
+                </thead>
+                {/notempty}
+                <tbody>
+                {foreach $list as $key=>$vo}
+                <tr>
+                    <td class='text-left nowrap'>
+                        {$vo.id}
+                    </td>
+                    <td class='text-left nowrap'>
+                        {$vo.tel}
+                    </td>
+                    <td class='text-left nowrap'>
+                        {:$vip[$vo.level]}
+                    </td>
+                    <td class='text-left nowrap'>
+                        {$vo.merits}
+                    </td>
+                    <td class='text-left nowrap'>
+                        {$vo.group_merits}
+                    </td>
+                    <td class='text-left nowrap'>
+                        {$vo['merits']+$vo['group_merits']}
+                    </td>
+                    {if condition="$vo['is_lock'] eq 1"}
+                    <td class='text-left nowrap' data-confirm="确定要解封吗？" data-action="{:url('member_lock')}" data-value="id#{$vo.id};is_lock#0">
+                        <span style="color:red;">锁定</span>
+                        <br/>
+                        {$vo.lock_remark}
+                    </td>
+                    {else/}
+                    <td class='text-left nowrap' data-modal="{:url('member_lock')}?id={$vo.id}&tel={$vo.tel}"  data-title="用户解封" >
+                        <span style="color:green;">正常</span>
+                    </td>
+                    {/if}
+                    <td class='text-left nowrap'>
+                        {$vo.create_time}
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            {empty name='$list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+        </div>
+    </div>
+</div>
+{/block}

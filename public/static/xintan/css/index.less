@@ -1,0 +1,178 @@
+.f_s(@f_s:0.28rem){
+    font-size: @f_s;
+}
+.cr(@cr:#3db163){
+    color:@cr;
+}
+.bor_rad(@br:0.2rem){
+    border-radius: @br;
+}
+.bg(@bg:#3db163){
+    background: @bg;
+}
+.mode-btn{
+    width: 6.5rem;
+    line-height:0.88rem;
+    text-align: center;
+    display: block;
+    .cr(#fff);
+    .f_s(0.32rem);
+    .bor_rad(0.5rem);
+}
+body{
+    height: 100vh;
+    width:100%;
+}
+.reg{
+	width: 100%;
+	min-height: 100vh;
+	background: linear-gradient(#e5fdf5 0%, #fff 70%, #fff 100% );
+	.login-title{
+		text-align: center;
+		padding:0.8rem 0 1rem;
+		.cr(#524f4f);
+		.f_s(0.42rem);
+		.logo {
+			width: 2.2rem;
+			height: 2.2rem;
+			display: block;
+			box-shadow: 1px 1px 0.1rem solid rgba(57,169,93,0.36);
+			margin: 0 auto 0.2rem;
+		}
+	}
+	.moblie-login{
+		padding:0 0.5rem;
+		box-sizing: border-box;
+		input{
+			.bg(transparent);
+			.f_s(0.3rem);
+		}
+		.login-input{
+			height: 1rem;
+			line-height: 1rem;
+			border-bottom: 1px solid #E6E6E6;
+		}
+		.img-input{
+			height: 0.36rem;
+			width: 0.36rem;
+			display: inline-block;
+			margin-right: 0.2rem;
+		}
+		.get_code{
+			.cr();
+			.f_s(0.3rem);
+			border-left: 1px solid #E6E6E6;
+			min-width: 1rem;
+			padding-left:0.2rem;
+			display: inline-block;
+			text-align: center;
+		}
+		.agreement{
+			justify-content: flex-start;
+			padding-top:0.2rem;
+			.cr(#666);
+			.circle{
+				border:1px solid #3db163;
+				margin-right:0.2rem;
+				border-radius: 50%;
+				width: 0.32rem;
+				height: 0.32rem;
+			}
+			.agree-img{
+				width: 0.32rem;
+				height: 0.32rem;
+				margin-right:0.2rem;
+			}
+			.agreement-text{
+				.cr();
+			}
+		}
+		.open-eye{
+			width: 0.42rem;
+			height: 0.26rem;
+			background: url(https://static.yccjk.com/app/eye.png);
+			background-size: cover;
+			background-position: 0 0;
+		}
+		.close-eye{
+			.open-eye;
+			background: url(https://static.yccjk.com/app/eye.png);
+			background-size: cover;
+			background-position: -0.42rem 0;
+		}
+	}
+	.submit_btn{
+		.mode-btn;
+        background: linear-gradient(270deg,#38a95d,#44bd6b,#4fd179);
+		margin:0.6rem auto 0;
+	}
+	.downText{
+		padding:0.3rem 0;
+		text-align: center;
+		.text{
+			.cr();
+		}
+	}
+}
+.container{
+	background:linear-gradient(#87eed0,#3db163);
+}
+.condown{
+	width:100%;
+	min-height:100vh;
+	background:url(icon_down_bg.png) no-repeat top center;
+	background-size:7.5rem 6.47rem;
+	.head{
+	  padding:1.5rem 0 1rem;
+	  text-align: center;
+	  font-size:0.32rem;
+	  color:#fff;
+	  img{
+		width:2rem;
+		height:2rem;
+		margin-bottom:0.5rem;
+		border-radius: 50%;
+		box-shadow: 0 5px 7px #eee;
+	  }
+	}
+	.btn{
+	  padding:0 0.7rem;
+	  a{
+		border:1px solid #fff;
+		padding:0.3rem ;
+		justify-content: center;
+		border-radius:0.8rem;
+		margin-bottom:0.3rem;
+		background:transparent;
+		font-size:0.38rem;
+		font-weight: 300;
+		color:#fff;
+		span{
+		  display: inline-block;
+		  width:0.44rem;
+		  height:0.56rem;
+		  margin:0 0.3rem;
+		}
+		.and_logo{
+		  background:url(icon_and_logo.png) no-repeat center center;
+		  background-size:contain;
+		}
+		.ios_logo{
+		  background:url(icon_ios_logo.png) no-repeat center center;
+		  background-size:contain;
+		}
+	  }
+	}
+	.code{
+	  text-align: center;
+	  margin-top:1.5rem;
+	  font-size: 0.28rem;
+	  img{
+		width:2.6rem;
+		height:2.6rem;
+		border:5px solid #fff;
+		margin-bottom:0.2rem;
+		border-radius:0.1rem
+	  }
+	}
+  }

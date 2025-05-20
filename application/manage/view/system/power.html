@@ -1,0 +1,37 @@
+{extend name="admin@main"}
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th class='text-left'>购买力</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left'>
+            {$vo.val}
+        </td>
+        <td>
+            {$vo.create_time|substr=0,10}
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("power_edit")}?id={$vo.id}' data-title="修改购买力">编辑</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    form.render();
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

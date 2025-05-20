@@ -1,0 +1,89 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">名称</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" name="mname" value="{$vo.mname|default=''}" placeholder="名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">封面图</label>
+            <div class="layui-input-block">
+                {notempty name='vo.thumb'}
+                    <div class="uploadimage transition uploadimagemtl imglogo" style="background-image: url('{$vo.thumb|default=''}');"></div>
+                {/notempty}
+                <input type="hidden" name="thumb" value="{$vo['thumb']|default=''}">
+                <a class="layui-btn layui-btn-normal btn-link" data-file="btn" data-field="thumb" data-type="png,jpg,jpeg" href="javascript:void(0)">上传图片</a>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">价格</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="price" value="{$vo.price|default=''}" placeholder="价格" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">每日收益</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="income" value="{$vo.income|default=''}" placeholder="每日收益" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">日期范围</label>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" required name="start_time" id="startDate" value='{$vo.start_time|default=""}' class="layui-input" placeholder="开始日期">
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline">
+                        <input type="text" required name="end_time" id="endDate" value='{$vo.end_time|default=""}' class="layui-input" placeholder="结束日期">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="0" title="隐藏" {if condition="@$vo.status eq 0"}checked{/if}>
+                <input type="radio" name="status" value="1" title="显示" {if condition="@$vo.status eq 1"}checked{/if}>
+                <input type="radio" name="status" value="2" title="禁卖" {if condition="@$vo.status eq 2"}checked{/if}>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type="submit">保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script type="text/javascript">
+    require(['jquery'], function () {
+        var tpl1 = '<div class="uploadimage transition uploadimagemtl imglogo"></div>';
+        $('[name="thumb"]').on('change', function () {
+            $('.imglogo').remove();
+            var $tpl1 = $(tpl1).css('backgroundImage', 'url(' + this.value + ')');
+            $(this).before($tpl1);
+        });
+    });
+        //日期范围
+    laydate.render({
+    elem: '#startDate'
+    ,type: 'datetime'
+});
+    laydate.render({
+    elem: '#endDate'
+    ,type: 'datetime'
+});
+        form.render()
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}
+

@@ -1,0 +1,104 @@
+{extend name="admin@main"}
+{block name="content"}
+<form class="layui-form layui-card" id="form" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off" >
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">昵称</label>
+            <div class="layui-input-block">
+                <input required type="text" autocomplete="off" name="title"  placeholder="请输入昵称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像</label>
+            <div class="layui-input-block">
+                <input required  type="hidden" name="imglogo">
+                <a class="layui-btn layui-btn-normal btn-link" data-file="one" data-field="imglogo" data-type="png,jpg,jpeg" href="javascript:void(0)">上传图片</a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+            <textarea name="descr" required lay-verify="required" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-block">
+                <input required type="hidden" name="imgs">
+                <a class="layui-btn layui-btn-normal btn-link" data-file="mut" data-field="imgs" data-type="png,jpg,jpeg" href="javascript:void(0)">上传图片</a>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">排序号</label>
+            <div class="layui-input-block">
+                <input type="number" autocomplete="off" name="order_num"  value="0" placeholder="排序号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="显示" checked>
+                <input type="radio" name="status" value="0" title="隐藏">
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit">保存数据</button>
+    </div>
+</form>
+<script type="text/javascript">
+    require(['jquery'], function () {
+        var tpl1 = '<div class="uploadimage transition uploadimagemtl imglogo"></div>';
+        $('[name="imgurl"]').on('change', function () {
+            $('.imglogo').remove();
+            var $tpl1 = $(tpl1).css('backgroundImage', 'url(' + this.value + ')');
+            $(this).before($tpl1);
+        });
+    });
+    require(['jquery'], function () {
+        var tpl = '<div class="uploadimage transition uploadimagemtl"><a href="javascript:void(0)" class="layui-icon upload-option-button">ဆ</a></div>';
+        $('[name="imgs"]').on('change', function () {
+            console.log(this.value);
+            var input = this, values = [], srcs = this.value;
+            $(this).prevAll('.uploadimage').map(function () {
+                values.push($(this).attr('data-tips-image'));
+            }), $(this).prevAll('.uploadimage').remove();
+            values.reverse();
+            values.push(srcs);
+            this.value = JSON.stringify(values);
+            for (var i in values) {
+                var $tpl = $(tpl).attr('data-tips-image', values[i]).css('backgroundImage', 'url(' + values[i] + ')');
+                $tpl.data('input', input).data('srcs', values).data('index', i);
+                $tpl.on('click', 'a', function (e) {
+                    e.stopPropagation();
+                    var $cur = $(this).parent();
+                    var data = $cur.data('srcs');
+                    delete data[$cur.data('index')];
+                    $cur.data('input').value = JSON.stringify(data);
+                    $cur.remove();
+                });
+                $(this).before($tpl);
+            }
+        });
+        var tpl1 = '<div class="uploadimage transition uploadimagemtl imglogo"></div>';
+        $('[name="imglogo"]').on('change', function () {
+            $('.imglogo').remove();
+            var $tpl1 = $(tpl1).css('backgroundImage', 'url(' + this.value + ')');
+            $(this).before($tpl1);
+        });
+    });
+    function deleteImg(ids){
+        var $cur = $(ids).parent();
+        var data = JSON.parse($("[name='imgs']").val());
+        data.splice([$cur.data('index')],1);
+        $("[name='imgs']").val(JSON.stringify(data));
+        $cur.remove();
+    }
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+{/block}
+

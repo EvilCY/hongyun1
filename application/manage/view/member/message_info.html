@@ -1,0 +1,11 @@
+{extend name="admin@main"}
+{block name="content"}
+<div class="layui-form-item">
+    <label class="layui-form-label label-required">简介</label>
+    <div class="layui-input-block">
+        <textarea name="descr" required lay-verify="required" class="layui-textarea">{$info}</textarea>
+    </div>
+</div>
+
+{/block}
+

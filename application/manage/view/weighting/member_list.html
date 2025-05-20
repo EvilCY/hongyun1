@@ -1,0 +1,84 @@
+{extend name="admin@main"}
+{block name="button"}
+<button data-modal='{:url("member_edit")}' class='layui-btn layui-btn-primary'><i class="layui-icon">&#xe654;</i>添加用户</button>
+<button data-action='{:url("member_del")}' data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除</button>
+{/block}
+{block name="content"}
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">搜索</label>
+                <div class="layui-input-inline">
+                    <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入用户手机号或加权名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">加权</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="weight_id">
+                        <option value="">全部</option>
+                        {foreach $mall_weight as $k=>$v}
+                        {eq name='Think.get.weight_id' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </form>
+
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='list-table-check-td think-checkbox'>
+            <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+        </th>
+        <th class='text-left nowrap'>ID</th>
+        <th>用户</th>
+        <th>所属分红</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='list-table-check-td think-checkbox'>
+            <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.tel}【{$vo.member_id}】
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.name}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time}
+        </td>
+        <td class='text-left nowrap'>
+            <a class="layui-btn layui-btn-danger layui-btn-sm"  data-confirm="确定要删除吗？" data-action="{:url('member_del')}" data-value="id#{$vo.id}">删除</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    form.render();
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

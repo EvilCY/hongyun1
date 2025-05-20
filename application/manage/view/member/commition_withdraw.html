@@ -1,0 +1,327 @@
+{extend name="admin@main"}
+{block name="content"}
+{php}$status = ['0,1,2,4' => '排除完成和拒绝','0,1,2,3,4,5' => '全部',0 => '待审核',1=>'审核通过云众3.0制单中',2=>'3.0制单成功',3=>'提现成功',4=>'打款中',5=>'审核拒绝'];$status_label = [ 0 => 'green',1=>'blue',2=>'blue',3=>'blue',4=>'gray',5 => 'primary'];$pay_type = [1 => '支付宝',2=>'微信',3=>'银行卡'];$type = [1 => '消费积分提现',2=>'福分提现']{/php}
+<style type="text/css">
+    .pic{
+        width: 100px;
+        height: 70px;
+    }
+    
+    .red{color:red}
+</style>
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select name="status">
+                        <!--<option  value="">全部</option>-->
+                        {foreach $status as $k=>$v}
+                        {eq name='Think.get.status' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+<!--            <div class="layui-form-item layui-inline">-->
+<!--                <label class="layui-form-label">描述</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <select name="type">-->
+<!--                        <option  value="">全部</option>-->
+<!--                        {foreach $type as $k=>$v}-->
+<!--                        {eq name='Think.get.type' value='$k.""'}-->
+<!--                        <option selected value="{$k}">{$v}</option>-->
+<!--                        {else}-->
+<!--                        <option value="{$k}">{$v}</option>-->
+<!--                        {/eq}-->
+<!--                        {/foreach}-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">银号卡号/支付宝或微信号</label>
+                <div class="layui-input-inline">
+                    <input name="alipay_no" value="{$Think.get.bank_no|default=''}" placeholder="输入银行卡号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">团队查询</label>
+                <div class="layui-input-inline">
+                    <input name="group_tel" value="{$Think.get.group_tel|default=''}" placeholder="请输入团队长手机号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">时间</label>
+                <div class="layui-input-inline">
+                    <input data-date-range name="add_time" value="{$Think.get.add_time|default=''}" placeholder="请选择时间" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">搜索</label>
+                <div class="layui-input-inline">
+                    <input name="name" value="{$Think.get.name|default=''}" placeholder="输入姓名,手机号,ID" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <span data-title="当前累计" class='layui-btn layui-btn-sm double_cash' double_cash='{$double}' incash='{$incash}'>当前累计提现{$num}</span>
+            </div>
+        </form>
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th>会员</th>
+        <th>姓名</th>
+        <th style="display:none">描述</th>
+        <th >类型</th>
+        <th>银行卡号</th>
+        <th>关联手机号</th>
+        <th>身份证</th>
+        <th>提现金额</th>
+        <th style="display:none">手续费</th>
+        <th>区域</th>
+        <th>状态</th>
+        <th>提交时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.tel}【<o class="idx">{$vo.member_id}</o>】
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.name}
+        </td>
+        <td class='text-left nowrap' style="display:none">
+            {$type[$vo.type]}
+        </td>
+        <td class='text-left nowrap'>
+            {$pay_type[$vo.pay_type]}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.bank_no}
+        </td>
+        <td class='text-left nowrap'>
+            <o onclick="complete_x({$vo['mobile']})" class='double_text'>{$vo.mobile}</o>
+        </td>
+        <td class='text-left nowrap card'>
+            {$vo.order_sn}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.money}
+        </td>
+        <td class='text-left nowrap' style="display:none">
+            {$vo.free}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.notice}
+        </td>
+        <td class='text-left nowrap'>
+            <span class="layui-badge layui-bg-{:$status_label[$vo['status']]}">{:$status[$vo['status']]}</span>
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time|default='--'}
+        </td>
+        <td class='nowrap'>
+            {if $vo['status'] == 0}
+            <span onclick="complete({$vo['id']})" class="layui-btn layui-btn-primary layui-btn-sm">标记完成</span>
+            <span onclick="authadopt({$vo['id']})" class="layui-btn layui-btn-normal layui-btn-sm">审核</span>
+            {/if}
+            {if $vo['status'] == 0 || $vo['status'] == 4}
+            <span onclick="authreject({$vo['id']})" class="layui-btn layui-btn-danger layui-btn-sm">拒绝</span>
+            {/if}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+        var element = document.querySelector(".double_cash");
+        var doubleCashValue = element.getAttribute("double_cash");
+        var elements = document.getElementsByClassName('double_text');
+        var doubleArr = doubleCashValue.split(',');
+        for (var i = 0; i < elements.length; i++) {
+            var text = elements[i].textContent.trim();
+            if (doubleArr.includes(text)) {
+                //elements[i].style.color = 'red';
+                }else{ elements[i].style.color = 'red';}
+        }
+        
+        
+        
+    function checkAge() {
+  const cards = document.querySelectorAll('.card');
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+
+  cards.forEach(card => {
+    const idNumber = card.textContent;
+    if (idNumber.length === 18) {
+      const birthYear = parseInt(idNumber.substr(6, 4), 10);
+      const age = currentYear - birthYear;
+
+      if (age > 65) {
+        card.classList.add('red');
+      }
+    }
+  });
+}
+
+checkAge();
+        
+        
+    function executeDelayed() {    
+    var idxElements = document.getElementsByClassName('idx');  
+    var doubleCashElement = document.querySelector('.double_cash');  
+      
+    if (doubleCashElement) {  
+        var incashValues = doubleCashElement.getAttribute('incash').split('|');  
+        for (var i = 0; i < idxElements.length; i++) {  
+            var idxValue = idxElements[i].innerText.trim(); 
+            var matchingIncash = [];
+            for (var j = 0; j < incashValues.length; j++) {  
+                var incashPair = incashValues[j].split(',');
+                if (incashPair[0] === idxValue) {
+                    matchingIncash.push(incashValues[j].split(',')[1]); 
+                }  
+            }  
+            if (matchingIncash.length > 0) {  
+                idxElements[i].title = matchingIncash.join('\r\n');  
+            }  
+        }  
+    } 
+    }
+    setTimeout(executeDelayed, 700);
+        
+        
+    //调用示例
+    layer.photos({
+        photos: '.test'
+        ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+    });
+    function authadopt(id) {
+        layer.confirm('确定审核通过?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                type: 'post',
+                url: "{:url('commition_withdraw_adopt')}",
+                data: {id:id},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+    function complete(id) {
+        layer.confirm('确定标记完成?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                type: 'post',
+                url: "{:url('commition_withdraw_complete')}",
+                data: {id:id},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+    function complete_x(id) {
+        layer.confirm('确定标记手机号?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                type: 'post',
+                url: "{:url('commition_withdraw_complete_x')}",
+                data: {id:id},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+    function authreject(id) {
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '请输入不通过原因',
+        }, function(value, index, elem){
+            if(value==''){
+                layer.msg('请输入不通过原因')
+            }
+            $.ajax({
+                type: 'post',
+                url: "{:url('commition_withdraw_reject')}",
+                data: {id:id,content:value},
+                success: function (data) {
+                    if(data.status){
+                        layer.close(index);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function () {
+                            location.reload()
+                        })
+                    }else{
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        })
+                    }
+                }
+            })
+        });
+    }
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

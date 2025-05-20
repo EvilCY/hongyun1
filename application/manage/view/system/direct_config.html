@@ -1,0 +1,36 @@
+{extend name="admin@main"}
+{block name="content"}
+<table class="layui-table" lay-skin="line">
+    <thead>
+    <tr>
+        <th>标题</th>
+        <th>头像</th>
+        <th>链接</th>
+        <th>观看人数</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class='text-left nowrap'>
+            {$direct.title}
+        </td>
+        <td class='text-left nowrap'>
+            <img src="{$direct.image}">
+        </td>
+        <td class='text-left nowrap'>
+            {$direct.url}
+        </td>
+        <td class='text-left nowrap'>
+            {$direct.num}
+        </td>
+        <td class='text-left nowrap'>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("direct_edit")}' data-title="编辑">编辑</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    form.render();
+</script>
+{/block}

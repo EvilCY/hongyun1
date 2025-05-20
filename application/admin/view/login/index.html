@@ -1,0 +1,91 @@
+{extend name="admin@index/index"}
+
+{block name="body"}
+<div class="login-container full-height" data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
+    <div class="header notselect layui-hide-xs">
+        <a href="{:url('@')}" class="title">{:sysconf('app_name')} <span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>
+    </div>
+    <form data-login-form onsubmit="return false;" method="post" class="layui-anim layui-anim-upbit" autocomplete="off">
+        <h2 class="notselect">系统管理</h2>
+        <ul>
+            <li class="hash" style="display:none">
+                <label>
+                    <i class="layui-icon layui-icon-username"></i>
+                    <input id="hashInput" value ='hash' class="layui-input" required name="hash" autofocus autocomplete="off" placeholder="hash">
+                </label>
+            </li>
+            <li class="hashx" style="display:none">
+                <label>
+                    <i class="layui-icon layui-icon-username"></i>
+                    <input id="hashInputx" value ='hashx' class="layui-input" required name="hashx" autofocus autocomplete="off" placeholder="hashx">
+                </label>
+            </li>
+            <li class="username">
+                <label>
+                    <i class="layui-icon layui-icon-username"></i>
+                    <input class="layui-input" required pattern="^\S{2,}$" name="username" autofocus autocomplete="off" placeholder="请输入账号">
+                </label>
+            </li>
+            <li class="password">
+                <label>
+                    <i class="layui-icon layui-icon-password"></i>
+                    <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="请输入密码">
+                </label>
+            </li>
+            <li class="password en">
+                <label>
+                    <i class="layui-icon layui-icon-auz"></i>
+                    <input value='888888' class="layui-input qk" required pattern="^\d{6}$" name="authcode" maxlength="6" type="password" autocomplete="off" placeholder="请输入验证码">
+                </label>
+            </li>
+            <li class="text-center padding-top-20">
+                <input type="hidden" name="skey" value="{$loginskey|default=''}">
+                <button type="submit" class="layui-btn layui-disabled full-width" data-form-loaded="立即登入">正在载入</button>
+            </li>
+        </ul>
+    </form>
+    <div class="footer notselect">
+        {:sysconf('site_copy')}
+        {if sysconf('miitbeian')}<span>&nbsp;|&nbsp;</span><a target="_blank" href="http://www.miitbeian.gov.cn">{:sysconf('miitbeian')}</a>{/if}
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.3/fingerprint2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+<script>
+   Fingerprint2.get(function(result, components) {
+        var fingerprintStringx = JSON.stringify(result);
+        result = result.filter(item => item.key !== "canvas");
+        result = result.filter(item => item.key !== "webgl");
+        var fingerprintString = JSON.stringify(result);
+        var md5Hash = CryptoJS.MD5(fingerprintStringx).toString();
+        var hashInput = document.getElementById('hashInput');
+        hashInput.value = md5Hash;
+        var hashInputx = document.getElementById('hashInputx');
+        hashInputx.value = fingerprintString;
+    });
+function toggleElements() {
+    var enElements = document.querySelectorAll('.en');
+            enElements.forEach(function(en) {
+                en.style.display = 'block'; 
+            });
+    var inputElement = document.querySelector('.qk');
+    if (inputElement) {
+        inputElement.value = '';
+    }
+}
+</script>
+
+{/block}
+
+{block name='style'}
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<script>if (location.href.indexOf('#') > -1) location.replace(location.href.split('#')[0])</script>
+<link rel="stylesheet" href="__ROOT__/static/theme/css/login.css">
+<style>#supersized-loader,.en{display:none}</style>
+{/block}
+
+{block name='script'}
+<script src="__ROOT__/static/plugs/supersized/supersized.3.2.7.min.js"></script>
+{/block}

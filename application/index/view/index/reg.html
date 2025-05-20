@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="divport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>注册</title>
+  <link rel="stylesheet" href="/static/xintan/css/vant.css" />
+  <link rel="stylesheet" href="/static/xintan/css/common.css" />
+  <link rel="stylesheet" href="/static/xintan/css/index.css?v=0.3" />
+</head>
+
+<body>
+
+  <div id="example">
+    <div class="reg">
+      <div class="login-title">
+        <img src="/static/xintan/css/logo.jpg" class="logo" alt=""/>
+        <span>你好，欢迎来红韵串商</span>
+      </div>
+      <div class="moblie-login">
+        <div class="login-input flex-box">
+          <input class="box-1" v-model="info.tel" placeholder="请输入注册手机号码" type="number"/>
+        </div>
+        <div class="login-input flex-box">
+          <input class="box-1" v-model="info.code" placeholder="请输入短信验证码" type="number"/>
+          <span class="get_code" @click="get_code">{{code_text}}</span>
+        </div>
+        <div class="login-input flex-box">
+          <input class="box-1" v-model="info.pwd" placeholder="请设置登录密码(8-20位字母加数字组合)" :type="pass.pwd1 ?'text':'password'"/>
+          </div>
+        <div class="login-input flex-box">
+          <input class="box-1" v-model="pwd" placeholder="请再次确认登录密码" :type="pass.pwd2 ?'text':'password'"/>
+         </div>
+        <div class="login-input flex-box">
+          <input class="box-1" v-model="info.refer_code"  placeholder="请输入邀请人手机号" type="text"/>
+          <span class="get_code">邀请人</span>
+        </div>
+        <div class="agreement flex-box" @click="agree = !agree">
+          <img v-if="agree" class="agree-img" src="/static/xintan/css/clecked.png" alt=""/>
+          <span v-else class="circle"></span>
+          <div class="box-1">
+            同意<span class="agreement-text">《红韵用户协议》</span>
+            <span class="agreement-text">《隐私政策》</span>
+          </div>
+        </div>
+        <div class="submit_btn" @click="submit">
+          注册
+        </div>
+        <div class="downText" @click="jump(downUrl)">
+          已有账号?
+          <span class="text">下载APP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/static/xintan/js/vue.js"></script>
+  <script src="/static/xintan/js/vant.min.js"></script>
+  <script src="/static/xintan/js/rem.js"></script>
+  <script src="/static/xintan/js/axios.min.js"></script>
+  <script>
+    Vue.use(vant.CountDown)
+    Vue.use(vant.Toast);
+    Vue.use(vant.Cascader);
+    new Vue({
+      el: '#example',
+      data: {
+        code_text: '获取验证码',
+        info:{
+          tel:'',
+          pwd:'',
+          code: "",
+          refer_code:'',
+          node_code:'',
+        },
+        pass:{
+          pwd1:false,
+          pwd2:false
+        },
+        agree:false,
+        pwd:'',
+        lock_of_code: false,//是否可发短信
+        apiUrl: 'https://shop.gxqhydf520.com/index/',
+        downUrl:'https://shop.gxqhydf520.com/index/index/down',
+        agreement: 'https://shop.gxqhydf520.com/index/custom_service.html',//用户协议
+        privacy: 'https://shop.gxqhydf520.com/index/privacy_policy.html',//隐私政策
+      },
+      created(){
+        this.info.refer_code = this.getUrlData();
+        if(this.info.refer_code){
+          axios.post(this.apiUrl+'account/refer_info',{
+            refer_tel:this.info.refer_code
+          })
+                  .then(res=>{
+                    console.log(res);
+                    if(res.data.status){
+                      this.info.node_code = res.data.msg;
+                    } else{
+                      vant.Toast(res.data.msg);
+                    }
+                  })
+                  .catch(err=>{
+                    console.log(err);
+                  })
+        }
+      },
+      methods: {
+        getUrlData(){
+          var r = window.location.search.substr(1);
+          var index = r.lastIndexOf("\=");
+          return  r.substring(index+1,r.length)
+        },
+        jump(item){
+          location.href = item
+        },
+        get_code() {
+          if (this.lock_of_code) {
+            return false;
+          }
+          if (!/^1[3-9]\d{9}$/.test(this.info.tel)) {
+            vant.Toast('请输入正确的手机号码')
+            return false;
+          }
+          this.lock_of_code = true;
+          var i = 60;
+          var self = this;
+          axios.post(this.apiUrl+'account/sms',{
+            tel:this.info.tel,
+            flag:'reg',
+          })
+          .then(res=>{
+            if(res.data.status){
+              self.code_text = i + '秒后重试';
+              var timing = setInterval(function () {
+                i--;
+                if (i <= 0) {
+                  self.code_text = '获取验证码';
+                  clearInterval(timing);
+                  self.lock_of_code = false;
+                } else {
+                  self.code_text = i + '秒后重试';
+                }
+              }, 2000);
+            }
+            else{
+              vant.Toast(res.data.msg);
+            }
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+        },
+        submit() {
+          if(!this.info.tel){
+            vant.Toast('请输入手机号');
+            return
+          }
+          if(!this.info.code){
+            vant.Toast('请输入验证码');
+            return
+          }
+          if(!this.info.pwd){
+            vant.Toast('请设置登录密码');
+            return
+          }
+          if (!/^(?![0-9]*$)[a-zA-Z0-9\W]{8,20}$/.test(this.info.pwd)) {
+            vant.Toast('登录密码过于简单');
+            return
+          }
+          if(!this.pwd){
+            vant.Toast('请再次输入登录密码');
+            return
+          }
+          if(this.info.pwd != this.pwd){
+            vant.Toast('两次密码不一致');
+            return
+          }
+          if(!this.agree){
+            vant.Toast('请阅读并勾选用户协议');
+            return
+          }
+          axios.post(this.apiUrl+'account/reg',{
+            auth_code:this.info.code,
+            tel:this.info.tel,
+            pwd:this.info.pwd,
+            refer_tel:this.info.refer_code,
+          })
+          .then(res=>{
+            console.log(res);
+            if(res.data.status){
+              vant.Toast(res.data.msg);
+              this.info.tel = ''
+              this.info.code = ''
+              this.info.pwd = ''
+              this.pwd = ''
+              this.info.refer_code = ''
+              this.info.node_code = ''
+              setTimeout(()=>{
+                location.href = this.downUrl
+              },1000)
+            } else{
+              vant.Toast(res.data.msg);
+            }
+          })
+          .catch(err=>{
+            console.log(err);
+          })
+        }
+      }
+
+    })
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+{extend name="admin@main"}
+{block name="content"}
+{php}$status = config("coupon_status");$status_label = config("coupon_label");{/php}
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">搜索</label>
+                <div class="layui-input-inline">
+                    <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入内容" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <button data-modal='{:url("pick_edit")}' class='layui-btn layui-btn-primary'><i class="layui-icon">&#xe654;</i>添加权益券</button>
+            </div>
+        </form>
+
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th class='text-left'>权益券名称</th>
+        <th>绑定商品</th>
+        <th>抵扣金额</th>
+        <th>图片</th>
+        <th>时间</th>
+        <th>添加时间</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left'>
+            {$vo.title|mb_substr=0,50}
+        </td>
+        <td>
+            {$vo.goods_id}
+        </td>
+        <td>
+            {$vo.money}
+        </td>
+        <td class='text-left nowrap'>
+            <img style="width: 100px" src="{$vo.imgurl}" title="{$vo.imgurl}"/>
+        </td>
+        <td>
+            {if condition='$vo.time_type == 2'}
+            发放后{$vo.day}天过期
+            {else}
+            {$vo.end_time}-{$vo.create_time}
+            {/if}
+        </td>
+        <td>
+            {$vo.create_time}
+        </td>
+        <td class='text-left nowrap'>
+            <span class="layui-badge layui-bg-{:$status_label[$vo['status']]}">{:$status[$vo['status']]}</span>
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("pick_edit")}?id={$vo.id}'>编辑</a>
+            {if condition='$vo.id != 1'}
+            <a data-dbclick class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除吗？" data-action="{:url('config_del')}" data-value="id#{$vo.id}">删 除</a>
+            {/if}
+
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    form.render();
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

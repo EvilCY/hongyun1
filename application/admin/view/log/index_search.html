@@ -1,0 +1,60 @@
+<fieldset>
+
+    <legend class="layui-bg-cyan">条件搜索</legend>
+
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">操作账号</label>
+            <div class="layui-input-inline">
+                <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入操作账号" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label"><b style="color:red">操作节点</b></label>
+            <div class="layui-input-inline">
+                <select name="node" class="layui-select">
+                    <option value="">请选择前台或后台</option>
+                    <option value="admin/login/index">后台登录</option>
+                    <option value="APP">APP登录</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">设备指纹</label>
+            <div class="layui-input-inline">
+                <input name="action" value="{$Think.get.action|default=''}" placeholder="请输入设备指纹" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">操作描述</label>
+            <div class="layui-input-inline">
+                <input name="content" value="{$Think.get.content|default=''}" placeholder="请输入操作内容" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">IP地址</label>
+            <div class="layui-input-inline">
+                <input name="geoip" value="{$Think.get.geoip|default=''}" placeholder="请输入位置地址" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">操作时间</label>
+            <div class="layui-input-inline">
+                <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="请选择操作时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+
+</fieldset>
+
+<script>form.render()</script>

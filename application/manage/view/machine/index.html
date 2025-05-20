@@ -1,0 +1,111 @@
+{extend name="admin@main"}
+{block name="content"}
+{php}$status = [0 => '隐藏',1=>'显示',2=>'禁卖'];$status_label = [ 0 => 'orange', 1 => 'green',2 => 'gray'];{/php}
+<div class="margin-bottom-10 text-left">
+    <fieldset>
+        <legend class="layui-bg-cyan">条件搜索</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">搜索</label>
+                <div class="layui-input-inline">
+                    <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入内容" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select class="select" name="status">
+                        <option value="">全部</option>
+                        {foreach $status as $k=>$v}
+                        {eq name='Think.get.status' value='$k.""'}
+                        <option selected value="{$k}">{$v}</option>
+                        {else}
+                        <option value="{$k}">{$v}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <button data-modal='{:url("machine_edit")}' class='layui-btn layui-btn-primary'><i class="layui-icon">&#xe654;</i>添加</button>
+            </div>
+        </form>
+
+    </fieldset>
+    <script>form.render()</script>
+</div>
+<table class="layui-table" lay-skin="line">
+    {notempty name='list'}
+    <thead>
+    <tr>
+        <th class='text-left nowrap'>ID</th>
+        <th>名称</th>
+        <th>售价</th>
+        <th>日收益</th>
+        <th>状态</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+    {foreach $list as $key=>$vo}
+    <tr>
+        <td class='text-left nowrap'>
+            {$vo.id}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.mname}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.price}
+        </td>
+        <td class='text-lefxt nowrap'>
+            {$vo.income}
+        </td>
+        <td class='text-left nowrap'>
+            <span class="layui-badge layui-bg-{:$status_label[$vo['status']]}">{:$status[$vo['status']]}</span>
+        </td>
+        <td>
+            {$vo.start_time}
+        </td>
+        <td>
+            {$vo.end_time}
+        </td>
+        <td class='text-left nowrap'>
+            {$vo.create_time}
+        </td>
+        <td class='text-left nowrap'>
+            <a class="layui-btn layui-btn-default layui-btn-sm" data-modal='{:url("machine_edit")}?id={$vo.id}' data-title="编辑">编辑</a>
+            <a class="layui-btn layui-btn-primary layui-btn-sm" data-modal='{:url("machine_order")}?id={$vo.id}' data-title="查看">查看</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<script>
+    form.render();
+    form.on('switch(test2)', function(data){
+        var status = data.elem.checked?1:0;
+        $.ajax({
+            url: '{:url("machine_status")}?id=' + data.value+'&status='+status,
+            type: 'post',
+            async: false,
+            success: function (data) {
+                if(data.code){
+                    layer.msg(data.info, {
+                        icon: 1,
+                        time: 2000
+                    })
+                }else{
+                    layer.msg(data.info);
+                }
+            }
+        });
+    });
+</script>
+{empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+{/block}

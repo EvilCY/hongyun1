@@ -1,0 +1,48 @@
+{extend name='main'}
+
+{block name='content'}
+<table class="layui-table" lay-even lay-skin="line">
+    <colgroup>
+        <col width="20%">
+        <col width="30%">
+        <col width="20%">
+        <col width="30%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th class="text-left" colspan="2">系统信息</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>ThinkPHP版本</td>
+        <td>{$think_ver}</td>
+    </tr>
+    <tr>
+        <td>服务器操作系统</td>
+        <td>{:php_uname('s')}</td>
+        </td>
+    </tr>
+    <tr>
+        <td>WEB运行环境</td>
+        <td>{:php_sapi_name()}</td>
+    </tr>
+    <tr>
+        <td>MySQL数据库版本</td>
+        <td>{$mysql_ver}</td>
+    </tr>
+    <tr>
+        <td>运行PHP版本</td>
+        <td>{$Think.PHP_VERSION}</td>
+    </tr>
+    <tr>
+        <td>上传大小限制</td>
+        <td>{:ini_get('upload_max_filesize')}</td>
+    </tr>
+    <tr>
+        <td>POST大小限制</td>
+        <td>{:ini_get('post_max_size')}</td>
+   </tr>
+    </tbody>
+</table>
+{/block}
